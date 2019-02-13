@@ -9,7 +9,7 @@ class HomePage extends Component {
       <main>
         <Header />
         <Link href="/">
-          <a>Go to Home</a>
+          <a>Go to secret page if authenticated </a>
         </Link>
       </main>
     );
