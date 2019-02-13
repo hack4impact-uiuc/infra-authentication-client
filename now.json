@@ -1,0 +1,7 @@
+{
+    "version": 2,
+    "name": "infra-authentication-client",
+    "builds": [
+        { "src": "package.json", "use": "@now/next" }
+    ]
+}
