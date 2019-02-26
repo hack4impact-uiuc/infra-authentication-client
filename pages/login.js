@@ -5,7 +5,7 @@ import Layout from "../components/layout.js";
 import { GoogleLogin, GoogleLogout } from 'react-google-login';
 
 export default class extends React.Component {
-  state = { email: "", password: "", loggingIn: false, errorMessage: "" };
+  state = { email: "", password: "", loggingIn: false, errorMessage: "", temp: "hello" };
 
   handleChange = event => {
     const value = event.target.value,
@@ -42,7 +42,9 @@ export default class extends React.Component {
         });
     }
   };
-
+  tempstate = () => {
+    this.setState({temp: "welcome"})
+  }
   render = () => (
     <Layout>
       <div>
@@ -78,12 +80,19 @@ export default class extends React.Component {
           responseType="id_token"
           buttonText={this.props.role}
           scope="https://www.googleapis.com/auth/userinfo.email"
-          onSuccess={this.responseGoogle}
+          onSuccess={this.tempstate}
         />
         <br/>
         <GoogleLogout
           buttonText="Logout"
         />
+        <br/>
+        <button
+          onClick={this.tempstate}
+        >
+          Test
+        </button>
+        {this.state.temp}
       </div>
     </Layout>
   );
