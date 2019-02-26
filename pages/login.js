@@ -2,6 +2,7 @@ import API_URL from "../components/globalApiUrl.js";
 import Link from "next/link";
 import Router from "next/router";
 import Layout from "../components/layout.js";
+import { GoogleLogin, GoogleLogout } from 'react-google-login';
 
 export default class extends React.Component {
   state = { email: "", password: "", loggingIn: false, errorMessage: "" };
@@ -70,6 +71,17 @@ export default class extends React.Component {
             {this.state.loggingIn ? "Logging in.." : "Log In"}
           </button>
         </form>
+        <br/>
+        <GoogleLogin
+          className="btn sign-in-btn"
+          clientId="992779657352-2te3be0na925rtkt8kt8vc1f8tiph5oh.apps.googleusercontent.com 	"
+          responseType="id_token"
+          scope="https://www.googleapis.com/auth/userinfo.email"
+        />
+        <br/>
+        <GoogleLogout
+          buttonText="Logout"
+        />
       </div>
     </Layout>
   );
