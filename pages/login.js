@@ -74,9 +74,11 @@ export default class extends React.Component {
         <br/>
         <GoogleLogin
           className="btn sign-in-btn"
-          clientId="992779657352-2te3be0na925rtkt8kt8vc1f8tiph5oh.apps.googleusercontent.com 	"
+          clientId="992779657352-2te3be0na925rtkt8kt8vc1f8tiph5oh.apps.googleusercontent.com"
           responseType="id_token"
+          buttonText={this.props.role}
           scope="https://www.googleapis.com/auth/userinfo.email"
+          onSuccess={this.responseGoogle}
         />
         <br/>
         <GoogleLogout
