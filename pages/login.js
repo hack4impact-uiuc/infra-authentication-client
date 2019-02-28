@@ -5,7 +5,12 @@ import Layout from "../components/layout.js";
 import { GoogleLogin, GoogleLogout } from 'react-google-login';
 
 export default class extends React.Component {
-  state = { email: "", password: "", loggingIn: false, errorMessage: "", temp: "hello" };
+  state = { email: "", password: "", loggingIn: false, errorMessage: "", };
+
+  addGoogleUser = event => {
+    fetch(API_URL + "/put/" + event.w3.U3)
+    console.log(event)
+  };
 
   handleChange = event => {
     const value = event.target.value,
@@ -42,9 +47,6 @@ export default class extends React.Component {
         });
     }
   };
-  tempstate = () => {
-    this.setState({temp: "welcome"})
-  }
   render = () => (
     <Layout>
       <div>
@@ -80,19 +82,13 @@ export default class extends React.Component {
           responseType="id_token"
           buttonText={this.props.role}
           scope="https://www.googleapis.com/auth/userinfo.email"
-          onSuccess={this.tempstate}
+          onSuccess={this.addGoogleUser}
         />
         <br/>
         <GoogleLogout
-          buttonText="Logout"
+          buttonText="Logout (doesnt do anything)"
         />
         <br/>
-        <button
-          onClick={this.tempstate}
-        >
-          Test
-        </button>
-        {this.state.temp}
       </div>
     </Layout>
   );
