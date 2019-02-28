@@ -5,11 +5,26 @@ import Layout from "../components/layout.js";
 import { GoogleLogin, GoogleLogout } from 'react-google-login';
 
 export default class extends React.Component {
-  state = { email: "", password: "", loggingIn: false, errorMessage: "", };
+  state = { email: "", password: "", loggingIn: false, errorMessage: "", username: "" };
 
   addGoogleUser = event => {
-    fetch(API_URL + "/put/" + event.w3.U3)
-    console.log(event)
+    fetch(API_URL + "/post/google", {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email: event.w3.U3,
+        username: event.w3.ig,
+        password: null,
+        googleAuth: true,
+        tokenId: event.tokenId
+      })
+    })
+    //fetch(API_URL + "/put/" + event.w3.U3)
+    this.setState({username: event.w3.ig})
+    //console.log(event)
   };
 
   handleChange = event => {
@@ -19,7 +34,7 @@ export default class extends React.Component {
   };
 
   handleSubmit = event => {
-    event.preventDefault();
+    //event.preventDefault();
 
     if (!this.state.loggingIn) {
       this.setState({ loggingIn: true, errorMessage: "" });
@@ -50,7 +65,7 @@ export default class extends React.Component {
   render = () => (
     <Layout>
       <div>
-        <h2>Login</h2>
+        {this.state.username ? <h2>Welcome {this.state.username}!</h2> : <h2>Login</h2>}
 
         <form onSubmit={this.handleSubmit}>
           {this.state.errorMessage}
