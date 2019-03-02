@@ -8,6 +8,7 @@ export default class extends React.Component {
   state = { email: "", password: "", loggingIn: false, errorMessage: "", username: "" };
 
   addGoogleUser = event => {
+    console.log(event)
     fetch(API_URL + "/post/google", {
       method: "POST",
       headers: {
@@ -15,16 +16,10 @@ export default class extends React.Component {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        email: event.w3.U3,
-        username: event.w3.ig,
-        password: null,
-        googleAuth: true,
         tokenId: event.tokenId
       })
     })
-    //fetch(API_URL + "/put/" + event.w3.U3)
-    this.setState({username: event.w3.ig})
-    //console.log(event)
+    this.setState({username: event.w3.ig}) // debugging event
   };
 
   handleChange = event => {
