@@ -17,7 +17,7 @@ export default class extends App {
     //if the authtoken is not found
     if (typeof c.authtoken == "undefined") {
       //don't do anything if we are on a page that doesn't require credentials
-      if (ctx.pathname == "/login" || ctx.pathname == "/forgot-password")
+      if (ctx.pathname == "/login" || ctx.pathname == "/forgot-password" || ctx.pathname == "/reset-password")
         return { pageProps };
       //if we are on any other page, redirect to the login page
       else redirectTo("/login", { res: ctx.res, status: 301 });
