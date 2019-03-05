@@ -3,12 +3,11 @@ import Link from "next/link";
 import Router from "next/router";
 import Layout from "../components/layout.js";
 import { GoogleLogin, GoogleLogout } from 'react-google-login';
-
-export default class extends React.Component {
+import { Component } from "react";
+class Login extends Component {
   state = { email: "", password: "", loggingIn: false, errorMessage: "", username: "" };
 
   addGoogleUser = event => {
-    console.log(event)
     fetch(API_URL + "/post/google", {
       method: "POST",
       headers: {
@@ -29,8 +28,6 @@ export default class extends React.Component {
   };
 
   handleSubmit = event => {
-    //event.preventDefault();
-
     if (!this.state.loggingIn) {
       this.setState({ loggingIn: true, errorMessage: "" });
 
@@ -103,3 +100,4 @@ export default class extends React.Component {
     </Layout>
   );
 }
+export default Login;
