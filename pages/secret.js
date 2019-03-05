@@ -6,7 +6,7 @@ import React from "react";
 import fetch from "isomorphic-unfetch";
 import redirectTo from "../components/redirectTo.js";
 import cookies from "next-cookies";
-import Router from "next/router"
+import Router from "next/router";
 
 class SecretPage extends Component {
   handleSubmit = ({ Component, router, ctx }) => {
