@@ -17,16 +17,14 @@ export default class extends React.Component {
 
     if (!this.state.didLoadQuestion) {
       this.setState({  errorMessage: "" });
-      const a = new Promise((resolve,reject) => resolve('{ "status":200, "question": "What was your mother\'s maiden name?"} ') )
-      //fetch(API_URL + "/getSecurityQuestion", {
-      //  method: "POST",
-      //  headers: { "Content-Type": "application/json" },
-      //  body: JSON.stringify({
-      //    email: this.state.email
-      //  })
-      // })
-        a
-        .then(r => JSON.parse(r))
+      fetch(API_URL + "/getSecurityQuestion", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: this.state.email
+        })
+       })
+        .then(r => r.json())
         .then(resp => {
           console.log(resp);
           /* returns a JSON object {result: "success"} or {error:""} with 400 status */
@@ -44,19 +42,15 @@ export default class extends React.Component {
     } else{
       // User already got the security question, so now send the response to the server
       this.setState({ errorMessage: "" });
-      const a = new Promise((resolve,reject) => {
-        return this.state.securityAnswer == "1234" ? resolve('{ "status":200, "message": "Email successfully sent"} ') : resolve('{ "status":400, "message": "Answer to security question is incorrect"} '); 
-      })
-      //fetch(API_URL + "/forgotPassword", {
-      //  method: "POST",
-      //  headers: { "Content-Type": "application/json" },
-      //  body: JSON.stringify({
-      //    email: this.state.email,
-      //    answer: this.state.securityAnswer
-      //  })
-      // })
-        a
-        .then(r => JSON.parse(r))
+      fetch(API_URL + "/forgotPassword", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: this.state.email,
+          answer: this.state.securityAnswer
+        })
+       })
+        .then(r => r.json())
         .then(resp => {
           console.log(resp);
           /* returns a JSON object {result: "success"} or {error:""} with 400 status */

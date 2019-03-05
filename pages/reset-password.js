@@ -21,24 +21,19 @@ export default class extends React.Component {
     else if (!this.state.resettingPassword) {
       // User already got the security question, so now send the response to the server
       this.setState({ errorMessage: "" });
-      const a = new Promise((resolve, reject) => {
-        return this.state.pin == 1234
-          ? resolve(
-              '{ "status":200, "message": "Password successfully reset"} '
-            )
-          : resolve('{ "status":400, "message": "PIN invalid or expired"} ');
-      });
-      //fetch(API_URL + "/resetPassword", {
-      //  method: "POST",
-      //  headers: { "Content-Type": "application/json" },
-      //  body: JSON.stringify({
-      //    email: this.state.email,
-      //    pin: this.state.pin
-      //  })
-      // })
-      a.then(r => JSON.parse(r))
+      
+      fetch(API_URL + "/passwordReset", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+         email: this.state.email,
+          pin: this.state.pin
+        })
+       })
+       .then(r => r.json())
         .then(resp => {
           /* returns a JSON object {result: "success"} or {error:""} with 400 status */
+          console.log(resp);
           this.setState({
             resettingPassword: false,
             errorMessage: resp.message
