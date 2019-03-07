@@ -47,7 +47,7 @@ export default class extends React.Component {
     if (id === "signup-button") {
       Router.push("/register");
     }
-  }
+  };
 
   render = () => (
     <Layout>
@@ -56,7 +56,7 @@ export default class extends React.Component {
 
         <form onSubmit={this.handleSubmit}>
           {this.state.errorMessage}
-
+          <br />
           <input
             name="email"
             type="email"
@@ -68,7 +68,7 @@ export default class extends React.Component {
           <input
             name="password"
             type="password"
-            placeholder="password"
+            placeholder="Password"
             value={this.state.password}
             onChange={this.handleChange}
             required
