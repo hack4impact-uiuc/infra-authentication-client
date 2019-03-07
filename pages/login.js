@@ -3,6 +3,10 @@ import Link from "next/link";
 import Router from "next/router";
 import Layout from "../components/layout.js";
 
+// michael's baby
+const EMAIL_REGEX = "([a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)@([a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+).([a-zA-Z]{2,3}).?([a-zA-Z]{0,3})";
+const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/;
+
 export default class extends React.Component {
   state = { email: "", password: "", loggingIn: false, errorMessage: "" };
 
@@ -10,6 +14,7 @@ export default class extends React.Component {
     const value = event.target.value,
       name = event.target.name;
     this.setState({ [name]: value });
+    // if (!email_regex.test(req.body.email))
   };
 
   handleSubmit = event => {
@@ -18,7 +23,7 @@ export default class extends React.Component {
     if (!this.state.loggingIn) {
       this.setState({ loggingIn: true, errorMessage: "" });
 
-      fetch(API_URL + "/auth", {
+      fetch(API_URL + "/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -28,9 +33,12 @@ export default class extends React.Component {
       })
         .then(r => r.json())
         .then(resp => {
-          /* returns a JSON object {result: "success"} or {error:""} with 400 status */
-          if (!resp.result) {
-            this.setState({ errorMessage: "Email or Password is invalid." });
+          /* /register endpoints returns a JSON object 
+            {status: 400, message: ""} or 
+            {error: ""} with 400 status
+           */
+          if (!resp.token) {
+            this.setState({ errorMessage: resp.message });
           } else {
             document.cookie = "authtoken=" + resp.token;
             console.log(resp.token);
@@ -61,6 +69,8 @@ export default class extends React.Component {
             name="email"
             type="email"
             placeholder="Email Address"
+            maxLength="64"
+            pattern={EMAIL_REGEX}
             value={this.state.email}
             onChange={this.handleChange}
             required
@@ -69,6 +79,8 @@ export default class extends React.Component {
             name="password"
             type="password"
             placeholder="Password"
+            maxLength="64"
+            pattern={PASSWORD_REGEX}
             value={this.state.password}
             onChange={this.handleChange}
             required

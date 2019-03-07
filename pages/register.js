@@ -3,6 +3,9 @@ import Link from "next/link";
 import Router from "next/router";
 import Layout from "../components/layout.js";
 
+const EMAIL_REGEX = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
+const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/;
+
 export default class extends React.Component {
   state = { 
     email: "", 
