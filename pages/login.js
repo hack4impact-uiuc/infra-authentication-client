@@ -5,7 +5,7 @@ import Layout from "../components/layout.js";
 
 // michael's baby
 const EMAIL_REGEX = "([a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)@([a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+).([a-zA-Z]{2,3}).?([a-zA-Z]{0,3})";
-const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/;
+// const PASSWORD_REGEX = "^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})";
 
 export default class extends React.Component {
   state = { email: "", password: "", loggingIn: false, errorMessage: "" };
@@ -14,7 +14,6 @@ export default class extends React.Component {
     const value = event.target.value,
       name = event.target.name;
     this.setState({ [name]: value });
-    // if (!email_regex.test(req.body.email))
   };
 
   handleSubmit = event => {
@@ -79,8 +78,9 @@ export default class extends React.Component {
             name="password"
             type="password"
             placeholder="Password"
+            minLength="8"
             maxLength="64"
-            pattern={PASSWORD_REGEX}
+            // pattern={PASSWORD_REGEX}
             value={this.state.password}
             onChange={this.handleChange}
             required

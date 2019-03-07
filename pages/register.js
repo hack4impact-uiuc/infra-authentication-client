@@ -3,8 +3,8 @@ import Link from "next/link";
 import Router from "next/router";
 import Layout from "../components/layout.js";
 
-const EMAIL_REGEX = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
-const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/;
+// michael's baby
+const EMAIL_REGEX = "([a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)@([a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+).([a-zA-Z]{2,3}).?([a-zA-Z]{0,3})";
 
 export default class extends React.Component {
   state = { 
@@ -74,6 +74,8 @@ export default class extends React.Component {
             name="email"
             type="email"
             placeholder="Email Address"
+            maxLength="64"
+            pattern={EMAIL_REGEX}
             value={this.state.email}
             onChange={this.handleChange}
             required
@@ -82,6 +84,8 @@ export default class extends React.Component {
             name="password"
             type="password"
             placeholder="Password"
+            minLength="8"
+            maxLength="64"
             value={this.state.password}
             onChange={this.handleChange}
             required
