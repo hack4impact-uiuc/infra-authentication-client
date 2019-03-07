@@ -43,8 +43,8 @@ export default class extends React.Component {
   };
 
   handleClick = event => {
-    const name = event.target.value;
-    if (name === "signup_button") {
+    const { id } = event.target
+    if (id === "signup-button") {
       Router.push("/register");
     }
   }
@@ -78,7 +78,7 @@ export default class extends React.Component {
           </button>
         </form>
 
-        <button name="signup_button" type="submit" onClick={this.handleClick}>
+        <button id="signup-button" type="submit" onClick={this.handleClick}>
           Don't have an account with us? Register here!
         </button>
       </div>

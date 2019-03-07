@@ -4,9 +4,7 @@ import Router from "next/router";
 import Layout from "../components/layout.js";
 
 export default class extends React.Component {
-  state = { 
-    errorMessage: ""
-  };
+    state = { email: "", password: "", loggingIn: false, errorMessage: "" };
 
  
   render = () => (
