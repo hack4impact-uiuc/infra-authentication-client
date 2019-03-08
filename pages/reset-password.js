@@ -4,33 +4,37 @@ import Router from "next/router";
 import Layout from "../components/layout.js";
 
 export default class extends React.Component {
-  state = { email: "", pin: "", password: "", confirmPassword:"", resettingPassword: false, errorMessage: "" };
+  state = {
+    email: "",
+    pin: "",
+    password: "",
+    confirmPassword: "",
+    resettingPassword: false,
+    errorMessage: ""
+  };
 
   handleChange = event => {
-    const value = event.target.value,
-      name = event.target.name;
-    this.setState({ [name]: value });
+    this.setState({ [event.target.name]: event.target.value });
   };
 
   handleSubmit = event => {
     event.preventDefault();
 
-    if(this.state.password !== this.state.confirmPassword){
-        this.setState({errorMessage: "Passwords don't match"});
-    }
-    else if (!this.state.resettingPassword) {
+    if (this.state.password !== this.state.confirmPassword) {
+      this.setState({ errorMessage: "Passwords don't match" });
+    } else if (!this.state.resettingPassword) {
       // User already got the security question, so now send the response to the server
       this.setState({ errorMessage: "" });
-      
+
       fetch(API_URL + "/passwordReset", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-         email: this.state.email,
+          email: this.state.email,
           pin: this.state.pin
         })
-       })
-       .then(r => r.json())
+      })
+        .then(r => r.json())
         .then(resp => {
           /* returns a JSON object {result: "success"} or {error:""} with 400 status */
           console.log(resp);
@@ -69,7 +73,6 @@ export default class extends React.Component {
             required
           />
 
-
           <p>Password:</p>
           <input
             name="password"
@@ -78,7 +81,6 @@ export default class extends React.Component {
             onChange={this.handleChange}
             required
           />
-
 
           <p>Confirm Password:</p>
           <input
@@ -101,7 +103,9 @@ export default class extends React.Component {
             />
           )}
           <button name="submit" type="submit">
-            {this.state.resettingPassword ? "Resetting Password..." : "Reset Password"}
+            {this.state.resettingPassword
+              ? "Resetting Password..."
+              : "Reset Password"}
           </button>
         </form>
       </div>

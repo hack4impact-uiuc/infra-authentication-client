@@ -22,9 +22,7 @@ class Login extends Component {
   };
 
   handleChange = event => {
-    const value = event.target.value,
-      name = event.target.name;
-    this.setState({ [name]: value });
+    this.setState({ [event.target.name]: event.target.value });
   };
 
   handleSubmit = event => {
