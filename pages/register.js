@@ -36,7 +36,7 @@ export default class extends React.Component {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             email: this.state.email,
-            password: this.state.password
+            password: this.state.password,
             role: "guest"
           })
         })
