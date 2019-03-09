@@ -119,13 +119,3 @@ export default class extends React.Component {
   );
 
 };
-
-
-
-
-// handleClick = event => {
-//   const { id } = event.target
-//   if (id === "login-button") {
-//     Router.push("/login");
-//   }
-// };
