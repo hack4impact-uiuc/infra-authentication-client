@@ -2,18 +2,19 @@ import API_URL from "../components/globalApiUrl.js";
 import Link from "next/link";
 import Router from "next/router";
 import Layout from "../components/layout.js";
+import { register } from "../utils/api";
 
 // michael's baby
-const EMAIL_REGEX = "([a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)@([a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+).([a-zA-Z]{2,3}).?([a-zA-Z]{0,3})";
+const EMAIL_REGEX =
+  "([a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)@([a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+).([a-zA-Z]{2,3}).?([a-zA-Z]{0,3})";
 
 export default class extends React.Component {
-  state = { 
-    email: "", 
-    password: "", 
-    signingUp: false, 
-    errorMessage: "" 
+  state = {
+    email: "",
+    password: "",
+    signingUp: false,
+    errorMessage: ""
   };
-
 
   handleChange = event => {
     const value = event.target.value,
@@ -21,42 +22,19 @@ export default class extends React.Component {
     this.setState({ [name]: value });
   };
 
-  handleSubmit = event => {
-    event.preventDefault();
+  async apiFetchExample() {
+    const result = await register(this.state.email, this.state.password);
+    const parsed = await result.json();
+    console.log(parsed);
+  }
 
-    if (!this.state.signingUp) {
-      this.setState({ signingUp: true, errorMessage: "" });
-
-      fetch(API_URL + "/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: this.state.email,
-          password: this.state.password
-        })
-      })
-        .then(r => r.json())
-        .then(resp => {
-          /* /register endpoints returns a JSON object 
-            {status: 400, message: ""} or 
-            {error: ""} with 400 status
-           */
-          if(!resp.token) {
-            this.setState({ errorMessage: resp.message });
-          } else {
-            console.log(resp);
-            document.cookie = "authtoken=" + resp.token;
-            console.log(resp.token);
-            window.location = "/secret";
-          }
-
-          this.setState({ signingUp: false });
-        });
-    }
+  handleSubmit = async e => {
+    console.log("clicked");
+    this.apiFetchExample();
   };
 
   handleClick = event => {
-    const { id } = event.target
+    const { id } = event.target;
     if (id === "login-button") {
       Router.push("/login");
     }
@@ -101,11 +79,7 @@ export default class extends React.Component {
       </div>
     </Layout>
   );
-
-};
-
-
-
+}
 
 // handleClick = event => {
 //   const { id } = event.target
