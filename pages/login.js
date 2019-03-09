@@ -8,7 +8,7 @@ class Login extends Component {
   state = { email: "", password: "", loggingIn: false, errorMessage: "", username: "" };
 
   addGoogleUser = event => {
-    fetch(API_URL + "/post/google", {
+    fetch(API_URL + "/google", {
       method: "POST",
       headers: {
         'Accept': 'application/json',
