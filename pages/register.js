@@ -10,6 +10,7 @@ export default class extends React.Component {
   state = { 
     email: "", 
     password: "", 
+    password2: "",
     signingUp: false, 
     errorMessage: "" 
   };
@@ -26,32 +27,36 @@ export default class extends React.Component {
 
     if (!this.state.signingUp) {
       this.setState({ signingUp: true, errorMessage: "" });
-
-      fetch(API_URL + "/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: this.state.email,
-          password: this.state.password
+      
+      if (this.state.password !== this.state.password2) {
+        this.setState({ signingUp: false, errorMessage: "Passwords do not match. Please try again." });
+      } else {
+        fetch(API_URL + "/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: this.state.email,
+            password: this.state.password
+          })
         })
-      })
-        .then(r => r.json())
-        .then(resp => {
-          /* /register endpoints returns a JSON object 
-            {status: 400, message: ""} or 
-            {error: ""} with 400 status
-           */
-          if(!resp.token) {
-            this.setState({ errorMessage: resp.message });
-          } else {
-            console.log(resp);
-            document.cookie = "authtoken=" + resp.token;
-            console.log(resp.token);
-            window.location = "/secret";
-          }
+          .then(r => r.json())
+          .then(resp => {
+            /* /register endpoints returns a JSON object 
+              {status: 400, message: ""} or 
+              {error: ""} with 400 status
+            */
+            if(!resp.token) {
+              this.setState({ errorMessage: resp.message });
+            } else {
+              console.log(resp);
+              document.cookie = "authtoken=" + resp.token;
+              console.log(resp.token);
+              window.location = "/secret";
+            }
 
-          this.setState({ signingUp: false });
-        });
+            this.setState({ signingUp: false });
+          });
+      }
     }
   };
 
@@ -90,6 +95,17 @@ export default class extends React.Component {
             onChange={this.handleChange}
             required
           />
+          <input
+            name="password2"
+            type="password"
+            placeholder="Enter password again"
+            minLength="8"
+            maxLength="64"
+            value={this.state.password2}
+            onChange={this.handleChange}
+            required
+          />
+
           <button name="submit" type="submit">
             {this.state.loggingIn ? "Signing Up.." : "Sign Up"}
           </button>
