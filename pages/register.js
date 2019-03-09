@@ -9,11 +9,12 @@ const EMAIL_REGEX =
   "([a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)@([a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+).([a-zA-Z]{2,3}).?([a-zA-Z]{0,3})";
 
 export default class extends React.Component {
-  state = {
-    email: "",
-    password: "",
-    signingUp: false,
-    errorMessage: ""
+  state = { 
+    email: "", 
+    password: "", 
+    password2: "",
+    signingUp: false, 
+    errorMessage: "" 
   };
 
   handleChange = event => {
@@ -68,6 +69,17 @@ export default class extends React.Component {
             onChange={this.handleChange}
             required
           />
+          <input
+            name="password2"
+            type="password"
+            placeholder="Enter password again"
+            minLength="8"
+            maxLength="64"
+            value={this.state.password2}
+            onChange={this.handleChange}
+            required
+          />
+
           <button name="submit" type="submit">
             {this.state.loggingIn ? "Signing Up.." : "Sign Up"}
           </button>
@@ -79,11 +91,6 @@ export default class extends React.Component {
       </div>
     </Layout>
   );
-}
 
-// handleClick = event => {
-//   const { id } = event.target
-//   if (id === "login-button") {
-//     Router.push("/login");
-//   }
-// };
+
+};
