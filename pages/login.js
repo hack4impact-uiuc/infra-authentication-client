@@ -2,6 +2,9 @@ import API_URL from "../components/globalApiUrl.js";
 import Link from "next/link";
 import Router from "next/router";
 import Layout from "../components/layout.js";
+import { login } from "../utils/api";
+import { parse } from "ipaddr.js";
+
 
 // michael's baby
 const EMAIL_REGEX = "([a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)@([a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+).([a-zA-Z]{2,3}).?([a-zA-Z]{0,3})";
@@ -16,36 +19,26 @@ export default class extends React.Component {
     this.setState({ [name]: value });
   };
 
-  handleSubmit = event => {
+  async apiFetchExample() {
+    const result = await login(this.state.email, this.state.password);
+    const parsed = await result.json();
+    return parsed;
+  }
+
+  handleSubmit = async e => {
     event.preventDefault();
-
     if (!this.state.loggingIn) {
-      this.setState({ loggingIn: true, errorMessage: "" });
-
-      fetch(API_URL + "/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: this.state.email,
-          password: this.state.password
-        })
-      })
-        .then(r => r.json())
-        .then(resp => {
-          /* /register endpoints returns a JSON object 
-            {status: 400, message: ""} or 
-            {error: ""} with 400 status
-           */
-          if (!resp.token) {
-            this.setState({ errorMessage: resp.message });
-          } else {
-            document.cookie = "authtoken=" + resp.token;
-            console.log(resp.token);
-            window.location = "/secret";
-          }
-
-          this.setState({ loggingIn: false });
-        });
+      await this.apiFetchExample()
+      .then(resp => {
+        if (!resp.token) {
+          this.setState({ errorMessage: resp.message });
+        } else {
+          document.cookie = "authtoken=" + resp.token;
+          console.log(resp.token);
+          window.location = "/secret";
+        }
+        this.setState({ loggingIn: false });
+      });
     }
   };
 

@@ -26,12 +26,24 @@ export default class extends React.Component {
   async apiFetchExample() {
     const result = await register(this.state.email, this.state.password);
     const parsed = await result.json();
-    console.log(parsed);
+    return parsed;
   }
 
   handleSubmit = async e => {
-    console.log("clicked");
-    this.apiFetchExample();
+    event.preventDefault();
+    if (!this.state.signingUp) {
+      await this.apiFetchExample()
+      .then(resp => {
+        if (!resp.token) {
+          this.setState({ errorMessage: resp.message });
+        } else {
+          document.cookie = "authtoken=" + resp.token;
+          console.log(resp.token);
+          window.location = "/secret";
+        }
+        this.setState({ signingUp: false });
+      });
+    }
   };
 
   handleClick = event => {
