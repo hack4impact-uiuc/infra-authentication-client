@@ -10,8 +10,25 @@ import { parse } from "ipaddr.js";
 const EMAIL_REGEX = "([a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)@([a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+).([a-zA-Z]{2,3}).?([a-zA-Z]{0,3})";
 // const PASSWORD_REGEX = "^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})";
 
-export default class extends React.Component {
-  state = { email: "", password: "", loggingIn: false, errorMessage: "" };
+
+import { GoogleLogin, GoogleLogout } from 'react-google-login';
+import { Component } from "react";
+// class Login extends Component {
+//   state = { email: "", password: "", loggingIn: false, errorMessage: "", username: "" };
+
+  addGoogleUser = event => {
+    fetch(API_URL + "/google", {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        tokenId: event.tokenId
+      })
+    })
+    this.setState({username: event.w3.ig}) // debugging event
+  };
 
   handleChange = event => {
     const value = event.target.value,
@@ -48,11 +65,10 @@ export default class extends React.Component {
       Router.push("/register");
     }
   };
-
   render = () => (
     <Layout>
       <div>
-        <h2>Login</h2>
+        {this.state.username ? <h2>Welcome {this.state.username}!</h2> : <h2>Login</h2>}
 
         <form onSubmit={this.handleSubmit}>
           {this.state.errorMessage}
@@ -82,11 +98,25 @@ export default class extends React.Component {
             {this.state.loggingIn ? "Logging in.." : "Log In"}
           </button>
         </form>
-
         <button id="signup-button" type="submit" onClick={this.handleClick}>
           Don't have an account with us? Register here!
         </button>
+        <br/>
+        <GoogleLogin
+          className="btn sign-in-btn"
+          clientId="992779657352-2te3be0na925rtkt8kt8vc1f8tiph5oh.apps.googleusercontent.com"
+          responseType="id_token"
+          buttonText={this.props.role}
+          scope="https://www.googleapis.com/auth/userinfo.email"
+          onSuccess={this.addGoogleUser}
+        />
+        <br/>
+        <GoogleLogout
+          buttonText="Logout (doesnt do anything)"
+        />
+        <br/>
       </div>
     </Layout>
   );
 }
+export default Login;
