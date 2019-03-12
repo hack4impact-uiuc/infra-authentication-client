@@ -14,6 +14,8 @@ export default class extends App {
       pageProps = await Component.getInitialProps(ctx);
     }
 
+    return { pageProps };
+
     //if the authtoken is not found
     if (typeof c.authtoken == "undefined") {
       //don't do anything if we are on a page that doesn't require credentials
