@@ -13,8 +13,8 @@ const EMAIL_REGEX = "([a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)@([a-zA-Z0-9!#$%&'*+/=?^_`
 
 import { GoogleLogin, GoogleLogout } from 'react-google-login';
 import { Component } from "react";
-// class Login extends Component {
-//   state = { email: "", password: "", loggingIn: false, errorMessage: "", username: "" };
+ class Login extends Component {
+   state = { email: "", password: "", loggingIn: false, errorMessage: "", username: "" };
 
   addGoogleUser = event => {
     fetch(API_URL + "/google", {
@@ -107,10 +107,6 @@ import { Component } from "react";
           buttonText={this.props.role}
           scope="https://www.googleapis.com/auth/userinfo.email"
           onSuccess={this.addGoogleUser}
-        />
-        <br/>
-        <GoogleLogout
-          buttonText="Logout (doesnt do anything)"
         />
         <br/>
       </div>
