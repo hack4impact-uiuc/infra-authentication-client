@@ -48,9 +48,7 @@ import { Component } from "react";
         if (!resp.token) {
           this.setState({ errorMessage: resp.message });
         } else {
-          document.cookie = "authtoken=" + resp.token;
-          console.log(resp.token);
-          window.location = "/secret";
+          localStorage.setItem('authtoken', JSON.stringify(resp.token))
         }
         this.setState({ loggingIn: false });
       });
