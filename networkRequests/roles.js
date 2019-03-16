@@ -15,7 +15,7 @@ export const getRoles = async userID => {
       });
     })
     .catch(error => {
-      console.log(error);
+      return { success: false, error };
     });
 };
 

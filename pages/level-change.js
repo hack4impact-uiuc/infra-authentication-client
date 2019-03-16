@@ -19,10 +19,15 @@ class LevelChangePage extends Component {
   async componentWillMount() {
     this.setState({ loading: true });
     const usersResponse = await getUsers();
+    console.log(usersResponse);
     if (usersResponse.success) {
-      this.setState({ users: usersResponse.users, loading: false });
-    } else if (usersResponse.error) {
-      this.setState({ eror: usersResponse.error, loading: false });
+      this.setState({
+        users: usersResponse.users,
+        loading: false,
+        roles: usersResponse.roles
+      });
+    } else if (usersResponse.error && !!usersResponse.error.message) {
+      this.setState({ eror: usersResponse.error.message, loading: false });
     } else {
       this.setState({
         error: "there was an error with the request",
@@ -59,6 +64,7 @@ class LevelChangePage extends Component {
 
   render() {
     const { loading, users, submitting, success, error, roles } = this.state;
+
     const showModal = loading || submitting || success || !!error;
     const modalText = loading
       ? "Loading..."
@@ -66,19 +72,14 @@ class LevelChangePage extends Component {
       ? "Submitting..."
       : success
       ? "Success!"
-      : !!error
-      ? !!error.message
-        ? error.message
-        : "There was an error!"
-      : "";
-
+      : error;
     return (
       <React.Fragment>
         <Page showModal={showModal}>
           <Header>
             <Text size="2rem">Level Change Users!</Text>
           </Header>
-          {!!users.length ? (
+          {!!users && !!users.length ? (
             <React.Fragment>
               <Text style={{ margin: "1rem" }} size="2rem">
                 Users
