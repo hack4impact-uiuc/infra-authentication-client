@@ -4,7 +4,7 @@ import Layout from "../components/layout.js";
 import styled, { css } from "styled-components";
 
 import { getUsers } from "../networkRequests/user";
-import { getRoles, roleChange } from "../networkRequests/roles";
+import { roleChange } from "../networkRequests/roles";
 class LevelChangePage extends Component {
   state = {
     rolesDropDownOpen: -1,
@@ -47,25 +47,34 @@ class LevelChangePage extends Component {
     this.setState({ error: "", success: false });
   };
 
-  changeRole = (userID, role, e) => {
+  changeRole = async (userID, role, e) => {
     this.setState({ submitting: true });
-    setTimeout(() => {
-      console.log(`${userID} changed to ${role}`);
+    console.log("boi");
+    const roleChangeResponse = await roleChange(userID, role);
+    console.log("huh");
+    console.log(roleChangeResponse);
+    if (roleChangeResponse.success) {
       this.setState({ submitting: false, success: true });
-    }, 2000);
-    // this.setState({ submitting: true })
-    // const resp = await roleChange(userID, role)
-    // if (resp.error) {
-    //     this.setState({ error: resp.error.message })
-    // } else {
-    //     this.setState({ submitting: false, success: true })
-    // }
+    } else if (!!roleChangeResponse.error) {
+      this.setState({
+        submitting: false,
+        error: roleChangeResponse.error,
+        loading: false
+      });
+    } else {
+      this.setState({
+        submitting: false,
+        error: "there was an error with the request",
+        loading: false
+      });
+    }
   };
 
   render() {
     const { loading, users, submitting, success, error, roles } = this.state;
 
     const showModal = loading || submitting || success || !!error;
+    console.log(showModal, error);
     const modalText = loading
       ? "Loading..."
       : submitting
