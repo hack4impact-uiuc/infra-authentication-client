@@ -9,12 +9,12 @@ const EMAIL_REGEX =
   "([a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)@([a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+).([a-zA-Z]{2,3}).?([a-zA-Z]{0,3})";
 
 export default class extends React.Component {
-  state = { 
-    email: "", 
-    password: "", 
+  state = {
+    email: "",
+    password: "",
     password2: "",
-    signingUp: false, 
-    errorMessage: "" 
+    signingUp: false,
+    errorMessage: ""
   };
 
   handleChange = event => {
@@ -32,17 +32,13 @@ export default class extends React.Component {
   handleSubmit = async e => {
     event.preventDefault();
     if (!this.state.signingUp) {
-      await this.apiFetchExample()
-      .then(resp => {
-        if (!resp.token) {
-          this.setState({ errorMessage: resp.message });
-        } else {
-          document.cookie = "authtoken=" + resp.token;
-          console.log(resp.token);
-          window.location = "/secret";
-        }
-        this.setState({ signingUp: false });
-      });
+      const response = await this.apiFetchExample();
+      if (!response.token) {
+        this.setState({ errorMessage: response.message });
+      } else {
+        document.cookie = "token=" + response.token;
+      }
+      this.setState({ signingUp: false });
     }
   };
 
@@ -103,6 +99,4 @@ export default class extends React.Component {
       </div>
     </Layout>
   );
-
-
-};
+}

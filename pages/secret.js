@@ -7,6 +7,7 @@ import fetch from "isomorphic-unfetch";
 import redirectTo from "../components/redirectTo.js";
 import cookies from "next-cookies";
 import Router from "next/router";
+import withAuth from "../components/withAuth"
 
 class SecretPage extends Component {
   handleSubmit = ({ Component, router, ctx }) => {
@@ -21,12 +22,12 @@ class SecretPage extends Component {
         <Header />
         <p> This is a secret page that should only be accessed once authenticated. </p>
         <button name="logout" type="submit" onClick={this.handleSubmit}>
-            Log out
-          </button>
+          Log out
+        </button>
       </Layout>
      
     );
   }
 }
 
-export default SecretPage;
+export default withAuth(SecretPage);

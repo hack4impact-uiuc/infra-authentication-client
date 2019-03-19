@@ -1,32 +1,48 @@
-import fetch from 'isomorphic-unfetch'
+import fetch from "isomorphic-unfetch";
 
 function register(emailInput, passwordInput) {
-    return fetch(`http://localhost:8000/register`, {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            email:emailInput,
-            password:passwordInput,
-            role:"guest"
-        })
+  try {
+    return fetch(`http://localhost:5000/register/`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: emailInput,
+        password: passwordInput,
+        role: "guest"
       })
+    });
+  } catch (err) {
+    console.log(err);
+  }
 }
 
 function login(emailInput, passwordInput) {
-  return fetch(`http://localhost:8000/login`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      email: emailInput,
-      password: passwordInput
-    })
-  })
+  try {
+    return fetch(`http://localhost:5000/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: emailInput,
+        password: passwordInput
+      })
+    });
+  } catch (err) {
+    console.log(err);
+  }
 }
 
-export {
-    register,
-    login
+function verify() {
+  try {
+    return fetch(`http://localhost:5000/verify/`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        token: document.cookie.substr(6)
+      })
+    });
+  } catch (err) {
+    console.log(err);
+  }
 }
+
+export { register, login, verify };

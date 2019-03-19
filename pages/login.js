@@ -5,29 +5,34 @@ import Layout from "../components/layout.js";
 import { login } from "../utils/api";
 import { parse } from "ipaddr.js";
 
-
 // michael's baby
-const EMAIL_REGEX = "([a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)@([a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+).([a-zA-Z]{2,3}).?([a-zA-Z]{0,3})";
+const EMAIL_REGEX =
+  "([a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)@([a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+).([a-zA-Z]{2,3}).?([a-zA-Z]{0,3})";
 // const PASSWORD_REGEX = "^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})";
 
-
-import { GoogleLogin, GoogleLogout } from 'react-google-login';
+import { GoogleLogin, GoogleLogout } from "react-google-login";
 import { Component } from "react";
- class Login extends Component {
-   state = { email: "", password: "", loggingIn: false, errorMessage: "", username: "" };
+class Login extends Component {
+  state = {
+    email: "",
+    password: "",
+    loggingIn: false,
+    errorMessage: "",
+    username: ""
+  };
 
   addGoogleUser = event => {
     fetch(API_URL + "/google", {
       method: "POST",
       headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        Accept: "application/json",
+        "Content-Type": "application/json"
       },
       body: JSON.stringify({
         tokenId: event.tokenId
       })
-    })
-    this.setState({username: event.w3.ig}) // debugging event
+    });
+    this.setState({ username: event.w3.ig }); // debugging event
   };
 
   handleChange = event => {
@@ -43,14 +48,12 @@ import { Component } from "react";
   handleSubmit = async e => {
     event.preventDefault();
     if (!this.state.loggingIn) {
-      await this.apiFetchExample()
-      .then(resp => {
+      await this.apiFetchExample().then(resp => {
         if (!resp.token) {
           this.setState({ errorMessage: resp.message });
         } else {
-          document.cookie = "authtoken=" + resp.token;
-          console.log(resp.token);
-          window.location = "/secret";
+          document.cookie = resp.token;
+          // localStorage.setItem('authtoken', JSON.stringify(resp.token))
         }
         this.setState({ loggingIn: false });
       });
@@ -58,7 +61,7 @@ import { Component } from "react";
   };
 
   handleClick = event => {
-    const { id } = event.target
+    const { id } = event.target;
     if (id === "signup-button") {
       Router.push("/register");
     }
@@ -66,7 +69,11 @@ import { Component } from "react";
   render = () => (
     <Layout>
       <div>
-        {this.state.username ? <h2>Welcome {this.state.username}!</h2> : <h2>Login</h2>}
+        {this.state.username ? (
+          <h2>Welcome {this.state.username}!</h2>
+        ) : (
+          <h2>Login</h2>
+        )}
 
         <form onSubmit={this.handleSubmit}>
           {this.state.errorMessage}
@@ -99,7 +106,7 @@ import { Component } from "react";
         <button id="signup-button" type="submit" onClick={this.handleClick}>
           Don't have an account with us? Register here!
         </button>
-        <br/>
+        <br />
         <GoogleLogin
           className="btn sign-in-btn"
           clientId="992779657352-2te3be0na925rtkt8kt8vc1f8tiph5oh.apps.googleusercontent.com"
@@ -108,7 +115,7 @@ import { Component } from "react";
           scope="https://www.googleapis.com/auth/userinfo.email"
           onSuccess={this.addGoogleUser}
         />
-        <br/>
+        <br />
       </div>
     </Layout>
   );
