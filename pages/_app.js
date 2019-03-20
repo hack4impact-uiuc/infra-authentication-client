@@ -5,6 +5,8 @@ import fetch from "isomorphic-unfetch";
 import redirectTo from "../components/redirectTo.js";
 import cookies from "next-cookies";
 
+import Head from "./../components/head";
+
 export default class extends App {
   static async getInitialProps({ Component, router, ctx }) {
     let pageProps = {};
@@ -36,8 +38,8 @@ export default class extends App {
     //           redirectTo("/secret", { res: ctx.res, status: 301 });
     //         else {
     //           //setting the cookie to expire way back when removes it
-//               document.cookie =
-//                 "authtoken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    //               document.cookie =
+    //                 "authtoken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     //           redirectTo("/login", { res: ctx.res, status: 301 });
     //         }
     //       } else if (ctx.pathname == "/login") {
@@ -45,7 +47,6 @@ export default class extends App {
     //         if (resp.result == "success") {
     //           redirectTo("/secret", { res: ctx.res, status: 301 });
     //         }
-
 
     //         //if it wasn't successful, stay where we are
     //         else
@@ -79,7 +80,7 @@ export default class extends App {
 
     // if (response !== null) {
     //   return { response };
-    // } else 
+    // } else
     return { pageProps };
   }
 
@@ -88,6 +89,7 @@ export default class extends App {
 
     return (
       <Container>
+        <Head />
         <Component {...this.props.response} />
       </Container>
     );

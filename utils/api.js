@@ -32,6 +32,7 @@ function login(emailInput, passwordInput) {
 }
 
 function verify() {
+  console.log(document.cookie.substr(6));
   try {
     return fetch(`http://localhost:5000/verify/`, {
       method: "POST",
