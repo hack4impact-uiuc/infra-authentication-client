@@ -8,6 +8,7 @@ const withAuth = WrappedComponent => {
     };
     async componentDidMount() {
       const verifyResponse = await verify();
+      console.log(verifyResponse);
       this.setState({ verified: verifyResponse.status === 200 });
     }
     render() {

@@ -3,6 +3,17 @@ import Link from "next/link";
 import Router from "next/router";
 import Layout from "../components/layout.js";
 import { register } from "../utils/api";
+import {
+  Form,
+  Button,
+  ButtonGroup,
+  FormGroup,
+  Label,
+  Input,
+  Card,
+  CardBody,
+  CardTitle
+} from "reactstrap";
 
 // michael's baby
 const EMAIL_REGEX =
@@ -13,32 +24,25 @@ export default class extends React.Component {
     email: "",
     password: "",
     password2: "",
-    signingUp: false,
     errorMessage: ""
   };
 
   handleChange = event => {
-    const value = event.target.value,
-      name = event.target.name;
+    const value = event.target.value;
+    const name = event.target.name;
     this.setState({ [name]: value });
   };
 
-  async apiFetchExample() {
-    const result = await register(this.state.email, this.state.password);
-    const parsed = await result.json();
-    return parsed;
-  }
-
   handleSubmit = async e => {
     event.preventDefault();
-    if (!this.state.signingUp) {
-      const response = await this.apiFetchExample();
-      if (!response.token) {
-        this.setState({ errorMessage: response.message });
-      } else {
-        document.cookie = "token=" + response.token;
-      }
-      this.setState({ signingUp: false });
+    const result = await register(this.state.email, this.state.password);
+    const response = await result.json();
+    if (!response.token) {
+      this.setState({ errorMessage: response.message });
+    } else {
+      document.cookie = "";
+      document.cookie = "token=" + response.token;
+      Router.push("/secret");
     }
   };
 
@@ -50,53 +54,78 @@ export default class extends React.Component {
   };
 
   render = () => (
-    <Layout>
-      <div>
-        <h2>Register</h2>
+    <div>
+      <Card
+        className="interview-card"
+        style={{ width: "400px", height: "60%" }}
+      >
+        <CardTitle>
+          <h3 style={{ textAlign: "center", paddingTop: "10px" }}>Register</h3>
+        </CardTitle>
 
-        <form onSubmit={this.handleSubmit}>
-          {this.state.errorMessage}
-          <br />
-          <input
-            name="email"
-            type="email"
-            placeholder="Email Address"
-            maxLength="64"
-            pattern={EMAIL_REGEX}
-            value={this.state.email}
-            onChange={this.handleChange}
-            required
-          />
-          <input
-            name="password"
-            type="password"
-            placeholder="Password"
-            minLength="8"
-            maxLength="64"
-            value={this.state.password}
-            onChange={this.handleChange}
-            required
-          />
-          <input
-            name="password2"
-            type="password"
-            placeholder="Enter password again"
-            minLength="8"
-            maxLength="64"
-            value={this.state.password2}
-            onChange={this.handleChange}
-            required
-          />
-
-          <button name="submit" type="submit">
-            {this.state.loggingIn ? "Signing Up.." : "Sign Up"}
-          </button>
-        </form>
-
-        <button id="login-button" onClick={this.handleClick}>
-          Already have an account? Log in here!
-        </button>
-      </div>
-    </Layout>
+        <CardBody>
+          <Form>
+            <FormGroup>
+              <Label for="exampleEmail">Email</Label>
+              <Input
+                type="email"
+                name="email"
+                id="exampleEmail"
+                maxLength="64"
+                pattern={EMAIL_REGEX}
+                value={this.state.email}
+                onChange={this.handleChange}
+                required
+              />
+            </FormGroup>
+            <FormGroup>
+              <Label for="examplePassword">Password</Label>
+              <Input
+                type="password"
+                name="password"
+                id="examplePassword"
+                minLength="8"
+                maxLength="64"
+                value={this.state.password}
+                onChange={this.handleChange}
+                required
+              />
+            </FormGroup>
+            <FormGroup>
+              <Label for="examplePassword">Confirm Password</Label>
+              <Input
+                type="password"
+                name="password2"
+                id="examplePassword"
+                minLength="8"
+                maxLength="64"
+                value={this.state.password}
+                onChange={this.handleChange}
+                required
+              />
+            </FormGroup>
+            <Button
+              color="success"
+              size="lg"
+              onClick={this.handleSubmit}
+              style={{ float: "left", width: "48%" }}
+            >
+              Register
+            </Button>{" "}
+            <Button
+              color="success"
+              size="lg"
+              onClick={() => Router.push("/login")}
+              style={{ float: "right", width: "49%" }}
+            >
+              Login
+            </Button>
+            <p style={{ color: "red" }}>
+              {this.state.errorMessage ? this.state.errorMessage : ""}
+            </p>
+          </Form>
+        </CardBody>
+      </Card>
+    </div>
   );
 }
