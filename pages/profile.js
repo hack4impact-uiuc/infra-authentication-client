@@ -10,24 +10,40 @@ import Router from "next/router";
 import withAuth from "../components/withAuth";
 import NavBar from "../components/navbar";
 import {
-  Collapse,
-  Navbar,
-  NavbarToggler,
-  NavbarBrand,
-  Nav,
-  NavItem,
-  NavLink,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem
+  Form,
+  Button,
+  ButtonGroup,
+  FormGroup,
+  Label,
+  Input,
+  Card,
+  CardBody
 } from "reactstrap";
-
 class ProfilePage extends Component {
-  logout = ({ Component, router, ctx }) => {
-    document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    console.log(document.cookie);
-    console.log("logged out");
+  state = {
+    question: "",
+    answer: ""
+  };
+
+  handleChange = event => {
+    this.setState({ [event.target.name]: event.target.value });
+  };
+
+  handleSubmit = async e => {
+    event.preventDefault();
+
+    console.log(this.state.question.trim().length);
+    console.log(this.state.answer.trim().length);
+    if (
+      this.state.question.trim().length > 0 &&
+      this.state.answer.trim().length > 0
+    ) {
+      const result = await setSecurityQuestion(
+        this.state.question,
+        this.state.answer
+      );
+      const resp = await result.json();
+    }
   };
 
   render() {
@@ -35,9 +51,43 @@ class ProfilePage extends Component {
       <div>
         <NavBar />
         <p> This is the profile page. </p>
-        <button name="logout" type="submit" onClick={this.logout}>
-          Log out
-        </button>
+        <Card
+          className="interview-card"
+          style={{ width: "400px", height: "60%" }}
+        >
+          <CardBody>
+            <Form>
+              <FormGroup>
+                <Label for="exampleEmail">Question</Label>
+                <Input
+                  name="question"
+                  maxLength="128"
+                  value={this.state.question}
+                  onChange={this.handleChange}
+                  required
+                />
+              </FormGroup>
+              <FormGroup>
+                <Label for="examplePassword">Answer</Label>
+                <Input
+                  name="answer"
+                  maxLength="128"
+                  value={this.state.answer}
+                  onChange={this.handleChange}
+                  required
+                />
+              </FormGroup>
+              <Button
+                color="success"
+                size="lg"
+                onClick={this.handleSubmit}
+                style={{ float: "left", width: "100%" }}
+              >
+                Set Security Question
+              </Button>{" "}
+            </Form>
+          </CardBody>
+        </Card>
       </div>
     );
   }

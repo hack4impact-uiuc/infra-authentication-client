@@ -28,23 +28,13 @@ class SecretPage extends Component {
     Router.prefetch("/profile");
   }
 
-  logout = ({ Component, router, ctx }) => {
-    document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    console.log(document.cookie);
-    console.log("logged out");
-  };
-
   render() {
     return (
       <div>
         <NavBar />
         <p>
-          {" "}
           This is a secret page that should only be accessed once authenticated.{" "}
         </p>
-        <button name="logout" type="submit" onClick={this.logout}>
-          Log out
-        </button>
       </div>
     );
   }

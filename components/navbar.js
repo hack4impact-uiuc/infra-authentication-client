@@ -12,15 +12,23 @@ import {
   DropdownMenu,
   DropdownItem
 } from "reactstrap";
+import Router from "next/router";
 
 class NavBar extends Component {
   state = {
     isOpen: false
   };
+
   toggle = () => {
     this.setState({
       isOpen: !this.state.isOpen
     });
+  };
+  logout = ({ Component, router, ctx }) => {
+    document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    console.log(document.cookie);
+    console.log("logged out");
+    Router.push("/login");
   };
 
   render() {
@@ -36,6 +44,7 @@ class NavBar extends Component {
                 <DropdownMenu right>
                   <DropdownItem href="/profile"> Profile </DropdownItem>
                   <DropdownItem href="/secret">Application </DropdownItem>
+                  <DropdownItem onClick={this.logout}>Logout </DropdownItem>
                 </DropdownMenu>
               </UncontrolledDropdown>
             </Nav>
