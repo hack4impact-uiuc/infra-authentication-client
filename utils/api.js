@@ -1,5 +1,11 @@
 import fetch from "isomorphic-unfetch";
 
+function getCookie(name) {
+  return decodeURIComponent(
+    document.cookie.replace(new RegExp("^.*" + name + "=([^\\s;]+).*$"), "$1")
+  );
+}
+
 function register(emailInput, passwordInput) {
   try {
     return fetch(`http://localhost:5000/register/`, {
@@ -32,13 +38,12 @@ function login(emailInput, passwordInput) {
 }
 
 function verify() {
-  console.log(document.cookie.substr(6));
   try {
     return fetch(`http://localhost:5000/verify/`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        token: document.cookie.substr(6)
+        token: getCookie("token")
       })
     });
   } catch (err) {
