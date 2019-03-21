@@ -1,9 +1,6 @@
 import App, { Container } from "next/app";
 import React from "react";
-import fetch from "isomorphic-unfetch";
-import redirectTo from "../components/redirectTo.js";
 import cookies from "next-cookies";
-
 import Head from "./../components/head";
 
 export default class extends App {

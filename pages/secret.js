@@ -1,9 +1,5 @@
 import { Component } from "react";
 import Link from "next/link";
-import React from "react";
-import fetch from "isomorphic-unfetch";
-import redirectTo from "../components/redirectTo.js";
-import cookies from "next-cookies";
 import Router from "next/router";
 import withAuth from "../components/withAuth";
 import NavBar from "../components/navbar";
