@@ -8,7 +8,6 @@ const defaultOGImage = "";
 const Head = props => (
   <NextHead>
     <meta charSet="UTF-8" />
-    <title>{props.title || "Recruitment Portal"}</title>
     <meta
       name="description"
       content={props.description || defaultDescription}

@@ -1,7 +1,5 @@
 import { Component } from "react";
 import Link from "next/link";
-import Header from "../components/header";
-import Layout from "../components/layout.js";
 import React from "react";
 import fetch from "isomorphic-unfetch";
 import redirectTo from "../components/redirectTo.js";
@@ -30,10 +28,7 @@ class ProfilePage extends Component {
   };
 
   handleSubmit = async e => {
-    event.preventDefault();
-
-    console.log(this.state.question.trim().length);
-    console.log(this.state.answer.trim().length);
+    e.preventDefault();
     if (
       this.state.question.trim().length > 0 &&
       this.state.answer.trim().length > 0

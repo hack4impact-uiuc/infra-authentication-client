@@ -1,7 +1,5 @@
-import API_URL from "../components/globalApiUrl.js";
 import Link from "next/link";
 import Router from "next/router";
-import Layout from "../components/layout.js";
 import { register } from "../utils/api";
 import {
   Form,

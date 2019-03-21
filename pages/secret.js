@@ -1,7 +1,5 @@
 import { Component } from "react";
 import Link from "next/link";
-import Header from "../components/header";
-import Layout from "../components/layout.js";
 import React from "react";
 import fetch from "isomorphic-unfetch";
 import redirectTo from "../components/redirectTo.js";

@@ -1,7 +1,5 @@
-import API_URL from "../components/globalApiUrl.js";
 import Link from "next/link";
 import Router from "next/router";
-import Layout from "../components/layout.js";
 import { login } from "../utils/api";
 import { parse } from "ipaddr.js";
 import {
@@ -31,7 +29,7 @@ class Login extends Component {
   };
 
   addGoogleUser = event => {
-    fetch(API_URL + "/google", {
+    fetch("http://localhost:5000/google", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -121,7 +119,6 @@ class Login extends Component {
           <p style={{ color: "red" }}>
             {this.state.errorMessage ? this.state.errorMessage : ""}
           </p>
-          {/* <Link href="/forgotPassword"> <a> Forgot Password? </a> </Link> */}
           <Link prefetch href="/forgotPassword">
             <a>Forgot Password?</a>
           </Link>
