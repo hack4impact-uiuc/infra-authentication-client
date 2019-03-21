@@ -83,7 +83,6 @@ export default class extends React.Component {
               <Input
                 type="password"
                 name="password"
-                id="examplePassword"
                 minLength="8"
                 maxLength="64"
                 value={this.state.password}
@@ -94,9 +93,8 @@ export default class extends React.Component {
             <FormGroup>
               <Label for="examplePassword">Confirm Password</Label>
               <Input
-                type="password"
+                type="password2"
                 name="password2"
-                id="examplePassword"
                 minLength="8"
                 maxLength="64"
                 value={this.state.password}
@@ -120,9 +118,7 @@ export default class extends React.Component {
             >
               Login
             </Button>
-            <p style={{ color: "red" }}>
-              {this.state.errorMessage ? this.state.errorMessage : ""}
-            </p>
+            <p style={{ color: "red" }}>{this.state.errorMessage}</p>
           </Form>
         </CardBody>
       </Card>

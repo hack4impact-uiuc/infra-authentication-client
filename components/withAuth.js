@@ -21,7 +21,7 @@ const withAuth = WrappedComponent => {
               verified={this.state.verified}
             />
           ) : (
-            <p> You are not verified </p>
+            <p> </p>
           )}
         </div>
       );

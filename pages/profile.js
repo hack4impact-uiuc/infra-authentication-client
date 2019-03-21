@@ -23,11 +23,7 @@ import {
   DropdownItem
 } from "reactstrap";
 
-class SecretPage extends Component {
-  componentDidMount() {
-    Router.prefetch("/profile");
-  }
-
+class ProfilePage extends Component {
   logout = ({ Component, router, ctx }) => {
     document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     console.log(document.cookie);
@@ -38,10 +34,7 @@ class SecretPage extends Component {
     return (
       <div>
         <NavBar />
-        <p>
-          {" "}
-          This is a secret page that should only be accessed once authenticated.{" "}
-        </p>
+        <p> This is the profile page. </p>
         <button name="logout" type="submit" onClick={this.logout}>
           Log out
         </button>
@@ -50,4 +43,4 @@ class SecretPage extends Component {
   }
 }
 
-export default withAuth(SecretPage);
+export default withAuth(ProfilePage);

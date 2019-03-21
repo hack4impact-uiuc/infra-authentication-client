@@ -12,7 +12,8 @@ import {
   Label,
   Input,
   Card,
-  CardBody
+  CardBody,
+  CardTitle
 } from "reactstrap";
 
 const EMAIL_REGEX =
@@ -64,15 +65,14 @@ class Login extends Component {
 
   render = () => (
     <div>
-      {this.state.username ? (
-        <h2>Welcome {this.state.username}!</h2>
-      ) : (
-        <h2>Login</h2>
-      )}
       <Card
         className="interview-card"
         style={{ width: "400px", height: "60%" }}
       >
+        <CardTitle>
+          <h3 style={{ textAlign: "center", paddingTop: "10px" }}>Login</h3>
+        </CardTitle>
+
         <CardBody>
           <Form>
             <FormGroup>
@@ -105,7 +105,7 @@ class Login extends Component {
               color="success"
               size="lg"
               onClick={this.handleSubmit}
-              style={{ float: "left", width: "48%" }}
+              style={{ float: "left", width: "49%" }}
             >
               Log In
             </Button>{" "}
@@ -113,11 +113,18 @@ class Login extends Component {
               color="success"
               size="lg"
               onClick={() => Router.push("/register")}
-              style={{ float: "right", width: "48%" }}
+              style={{ float: "right", width: "49%" }}
             >
               Register
             </Button>
           </Form>
+          <p style={{ color: "red" }}>
+            {this.state.errorMessage ? this.state.errorMessage : ""}
+          </p>
+          {/* <Link href="/forgotPassword"> <a> Forgot Password? </a> </Link> */}
+          <Link prefetch href="/forgotPassword">
+            <a>Forgot Password?</a>
+          </Link>
         </CardBody>
       </Card>
       <br />
