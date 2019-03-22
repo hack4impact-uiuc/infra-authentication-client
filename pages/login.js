@@ -115,6 +115,7 @@ class Login extends Component {
               Register
             </Button>
           </Form>
+          <br />
           <p style={{ color: "red" }}>
             {this.state.errorMessage ? this.state.errorMessage : ""}
           </p>
