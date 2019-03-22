@@ -113,6 +113,23 @@ function resetPassword(pin, email, password) {
   }
 }
 
+function changePassword(password) {
+  try {
+    return fetch(`http://localhost:5000/changePassword`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        token: getCookie("token")
+      },
+      body: JSON.stringify({
+        password
+      })
+    });
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 function getUsersForRolesPage() {
   console.log("ROLES");
   try {
@@ -151,6 +168,7 @@ export {
   getSecurityQuestion,
   submitSecurityQuestionAnswer,
   resetPassword,
+  changePassword,
   getUsersForRolesPage,
   changeRole
 };
