@@ -43,7 +43,7 @@ class NavBar extends Component {
                 <DropdownToggle nav caret />
                 <DropdownMenu right>
                   <DropdownItem href="/profile"> Profile </DropdownItem>
-                  <DropdownItem href="/secret">Application </DropdownItem>
+                  <DropdownItem href="/">Application </DropdownItem>
                   <DropdownItem href="/roles">Changing Roles </DropdownItem>
                   <DropdownItem onClick={this.logout}>Logout </DropdownItem>
                 </DropdownMenu>

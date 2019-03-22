@@ -1,6 +1,6 @@
 import React from "react";
 import { verify } from "../utils/api";
-
+import NavBar from "./navbar";
 const withAuth = WrappedComponent => {
   class HOC extends React.Component {
     state = {
@@ -21,7 +21,10 @@ const withAuth = WrappedComponent => {
               verified={this.state.verified}
             />
           ) : (
-            <p> </p>
+            <div>
+              <NavBar />
+              <p> You are not authenticated </p>
+            </div>
           )}
         </div>
       );

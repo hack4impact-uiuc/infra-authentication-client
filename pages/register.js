@@ -40,7 +40,7 @@ export default class extends React.Component {
     } else {
       document.cookie = "";
       document.cookie = "token=" + response.token;
-      Router.push("/secret");
+      Router.push("/");
     }
   };
 
