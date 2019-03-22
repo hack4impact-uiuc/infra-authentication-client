@@ -41,10 +41,7 @@ function verify() {
   try {
     return fetch(`http://localhost:5000/verify/`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        token: getCookie("token")
-      })
+      headers: { "Content-Type": "application/json", token: getCookie("token") }
     });
   } catch (err) {
     console.log(err);
@@ -52,13 +49,14 @@ function verify() {
 }
 
 function setSecurityQuestion(question, answer) {
-  console.log(document.cookie.substr(6));
   try {
     return fetch(`http://localhost:5000/addSecurityQuestion`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        token: getCookie("token")
+      },
       body: JSON.stringify({
-        token: document.cookie.substr(6),
         question,
         answer
       })
@@ -69,8 +67,6 @@ function setSecurityQuestion(question, answer) {
 }
 
 function getSecurityQuestion(email) {
-  console.log(document.cookie.substr(6));
-  console.log(email);
   try {
     return fetch(`http://localhost:5000/getSecurityQuestion`, {
       method: "POST",
@@ -130,9 +126,6 @@ function getUsersForRolesPage() {
 }
 
 function changeRole(userEmail, newRole) {
-  console.log("ROLES");
-  console.log(userEmail);
-  console.log(newRole);
   try {
     return fetch(`http://localhost:5000/roleschange`, {
       method: "POST",
