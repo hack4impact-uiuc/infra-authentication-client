@@ -1,6 +1,5 @@
 import Link from "next/link";
 import Router from "next/router";
-import Layout from "../components/layout.js";
 import {
   getSecurityQuestion,
   submitSecurityQuestionAnswer,
@@ -121,7 +120,7 @@ class ForgotPasswordPage extends Component {
               <FormGroup>
                 <Label>Confirm Password</Label>
                 <Input
-                  type="password2"
+                  type="password"
                   name="password2"
                   minLength="8"
                   maxLength="64"

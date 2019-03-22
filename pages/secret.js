@@ -18,10 +18,6 @@ import {
 } from "reactstrap";
 
 class SecretPage extends Component {
-  componentDidMount() {
-    Router.prefetch("/profile");
-  }
-
   render() {
     return (
       <div>

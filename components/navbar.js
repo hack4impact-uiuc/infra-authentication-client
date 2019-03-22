@@ -44,6 +44,7 @@ class NavBar extends Component {
                 <DropdownMenu right>
                   <DropdownItem href="/profile"> Profile </DropdownItem>
                   <DropdownItem href="/secret">Application </DropdownItem>
+                  <DropdownItem href="/roles">Changing Roles </DropdownItem>
                   <DropdownItem onClick={this.logout}>Logout </DropdownItem>
                 </DropdownMenu>
               </UncontrolledDropdown>

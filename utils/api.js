@@ -117,6 +117,39 @@ function resetPassword(pin, email, password) {
   }
 }
 
+function getUsersForRolesPage() {
+  console.log("ROLES");
+  try {
+    return fetch(`http://localhost:5000/roles`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json", token: getCookie("token") }
+    });
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+function changeRole(userEmail, newRole) {
+  console.log("ROLES");
+  console.log(userEmail);
+  console.log(newRole);
+  try {
+    return fetch(`http://localhost:5000/roleschange`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        token: getCookie("token")
+      },
+      body: JSON.stringify({
+        userEmail,
+        newRole
+      })
+    });
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 export {
   register,
   login,
@@ -124,5 +157,7 @@ export {
   setSecurityQuestion,
   getSecurityQuestion,
   submitSecurityQuestionAnswer,
-  resetPassword
+  resetPassword,
+  getUsersForRolesPage,
+  changeRole
 };
