@@ -56,7 +56,7 @@ class Login extends Component {
     } else {
       document.cookie = "";
       document.cookie = "token=" + resp.token;
-      Router.push("/secret");
+      Router.push("/");
     }
   };
 
