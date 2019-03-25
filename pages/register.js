@@ -84,11 +84,11 @@ export default class extends React.Component {
             <FormGroup>
               <Label for="examplePassword">Confirm Password</Label>
               <Input
-                type="password2"
+                type="password"
                 name="password2"
                 minLength="8"
                 maxLength="64"
-                value={this.state.password}
+                value={this.state.password2}
                 onChange={this.handleChange}
                 required
               />
