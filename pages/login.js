@@ -12,6 +12,7 @@ import {
   CardBody,
   CardTitle
 } from "reactstrap";
+import { setCookie } from "./../utils/cookie";
 
 const EMAIL_REGEX =
   "([a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)@([a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+).([a-zA-Z]{2,3}).?([a-zA-Z]{0,3})";
@@ -115,6 +116,7 @@ class Login extends Component {
               Register
             </Button>
           </Form>
+          <br />
           <p style={{ color: "red" }}>
             {this.state.errorMessage ? this.state.errorMessage : ""}
           </p>

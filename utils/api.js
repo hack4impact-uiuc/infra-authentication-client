@@ -1,10 +1,6 @@
 import fetch from "isomorphic-unfetch";
 
-function getCookie(name) {
-  return decodeURIComponent(
-    document.cookie.replace(new RegExp("^.*" + name + "=([^\\s;]+).*$"), "$1")
-  );
-}
+import { getCookie } from "./cookie";
 
 function register(emailInput, passwordInput) {
   try {
@@ -81,7 +77,6 @@ function getSecurityQuestion(email) {
 }
 
 function submitSecurityQuestionAnswer(email, answer) {
-  console.log(document.cookie.substr(6));
   try {
     return fetch(`http://localhost:5000/forgotPassword`, {
       method: "POST",
@@ -97,7 +92,6 @@ function submitSecurityQuestionAnswer(email, answer) {
 }
 
 function resetPassword(pin, email, password) {
-  console.log(document.cookie.substr(6));
   try {
     return fetch(`http://localhost:5000/passwordReset`, {
       method: "POST",
@@ -106,6 +100,24 @@ function resetPassword(pin, email, password) {
         pin,
         email,
         password
+      })
+    });
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+function changePassword(currentPassword, newPassword) {
+  try {
+    return fetch(`http://localhost:5000/changePassword`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        token: getCookie("token")
+      },
+      body: JSON.stringify({
+        currentPassword,
+        newPassword
       })
     });
   } catch (err) {
@@ -151,6 +163,7 @@ export {
   getSecurityQuestion,
   submitSecurityQuestionAnswer,
   resetPassword,
+  changePassword,
   getUsersForRolesPage,
   changeRole
 };

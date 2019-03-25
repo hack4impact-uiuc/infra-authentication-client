@@ -13,6 +13,7 @@ import {
   DropdownItem
 } from "reactstrap";
 import Router from "next/router";
+import { removeCookie } from "./../utils/cookie";
 
 class NavBar extends Component {
   state = {
@@ -25,9 +26,7 @@ class NavBar extends Component {
     });
   };
   logout = ({ Component, router, ctx }) => {
-    document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    console.log(document.cookie);
-    console.log("logged out");
+    removeCookie("token");
     Router.push("/login");
   };
 
