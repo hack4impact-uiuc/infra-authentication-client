@@ -12,6 +12,7 @@ import {
   CardBody,
   CardTitle
 } from "reactstrap";
+import { setCookie } from "./../utils/cookie";
 
 // michael's baby
 const EMAIL_REGEX =
@@ -33,14 +34,17 @@ export default class extends React.Component {
 
   handleSubmit = async e => {
     event.preventDefault();
-    const result = await register(this.state.email, this.state.password);
-    const response = await result.json();
-    if (!response.token) {
-      this.setState({ errorMessage: response.message });
+    if (this.state.password === this.state.password2) {
+      const result = await register(this.state.email, this.state.password);
+      const response = await result.json();
+      if (!response.token) {
+        this.setState({ errorMessage: response.message });
+      } else {
+        setCookie("token", resp.token);
+        Router.push("/");
+      }
     } else {
-      document.cookie = "";
-      document.cookie = "token=" + response.token;
-      Router.push("/");
+      this.setState({ errorMessage: "Passwords do not match" });
     }
   };
 

@@ -17,11 +17,17 @@ import {
   Row,
   Col
 } from "reactstrap";
+
+import { setCookie } from "./../utils/cookie";
+
 class ProfilePage extends Component {
   state = {
     question: "",
     answer: "",
-    newpass: ""
+    oldPassword: "",
+    newPassword1: "",
+    newPassword2: "",
+    passwordChangeMessage: ""
   };
 
   handleChange = event => {
@@ -44,9 +50,20 @@ class ProfilePage extends Component {
 
   handlePassChange = async e => {
     e.preventDefault();
-    if (this.state.newpass.trim().length > 0) {
-      const result = await changePassword(this.state.newpass);
-      const resp = await result.json();
+    if (this.state.newPassword1 === this.state.newPassword2) {
+      const result = await changePassword(
+        this.state.oldPassword,
+        this.state.newPassword1
+      );
+      const response = await result.json();
+      if (!response.token) {
+        this.setState({ passwordChangeMessage: response.message });
+      } else {
+        this.setState({ passwordChangeMessage: response.message });
+        setCookie("token", response.token);
+      }
+    } else {
+      this.setState({ passwordChangeMessage: "Passwords do not match" });
     }
   };
 
@@ -100,11 +117,34 @@ class ProfilePage extends Component {
             <CardBody>
               <Form>
                 <FormGroup>
+                  <Label>Old Password</Label>
+                  <Input
+                    name="oldPassword"
+                    type="password"
+                    maxLength="128"
+                    value={this.state.oldPassword}
+                    onChange={this.handleChange}
+                    required
+                  />
+                </FormGroup>
+                <FormGroup>
                   <Label>New Password</Label>
                   <Input
-                    name="newpass"
+                    name="newPassword1"
+                    type="password"
                     maxLength="128"
-                    value={this.state.newpass}
+                    value={this.state.newPassword1}
+                    onChange={this.handleChange}
+                    required
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <Label>Confirm Password</Label>
+                  <Input
+                    name="newPassword2"
+                    type="password"
+                    maxLength="128"
+                    value={this.state.newPassword2}
                     onChange={this.handleChange}
                     required
                   />
@@ -118,6 +158,7 @@ class ProfilePage extends Component {
                   Change Password
                 </Button>
               </Form>
+              {this.state.passwordChangeMessage}
             </CardBody>
           </Card>
         </Row>
