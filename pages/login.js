@@ -40,9 +40,8 @@ class Login extends Component {
     if (resp.status !== 200) {
       this.setState({ errorMessage: resp.message });
     } else {
-      document.cookie = "";
-      document.cookie = "token=" + e.tokenId;
-      document.cookie = "google=true";
+      setCookie("token", e.tokenId);
+      setCookie("google", true);
       Router.push("/");
     }
   };
@@ -56,8 +55,7 @@ class Login extends Component {
     if (!resp.token) {
       this.setState({ errorMessage: resp.message });
     } else {
-      document.cookie = "";
-      document.cookie = "token=" + resp.token;
+      setCookie("token", resp.token);
       Router.push("/");
     }
   };
