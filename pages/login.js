@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Router from "next/router";
-import { login } from "../utils/api";
+import { login, google } from "../utils/api";
 import {
   Form,
   Button,
@@ -28,22 +28,23 @@ class Login extends Component {
     username: ""
   };
 
-  addGoogleUser = event => {
-    fetch("http://localhost:5000/google", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        tokenId: event.tokenId
-      })
-    });
-    this.setState({ username: event.w3.ig }); // debugging event
-  };
-
   handleChange = event => {
     this.setState({ [event.target.name]: event.target.value });
+  };
+
+  handleGoogle = async e => {
+    // event.preventDefault();
+
+    const result = await google(e.tokenId);
+    const resp = await result.json();
+    if (resp.status !== 200) {
+      this.setState({ errorMessage: resp.message });
+    } else {
+      document.cookie = "";
+      document.cookie = "token=" + e.tokenId;
+      document.cookie = "google=true";
+      Router.push("/");
+    }
   };
 
   handleSubmit = async e => {
@@ -132,7 +133,7 @@ class Login extends Component {
         responseType="id_token"
         buttonText={this.props.role}
         scope="https://www.googleapis.com/auth/userinfo.email"
-        onSuccess={this.addGoogleUser}
+        onSuccess={this.handleGoogle}
       />
       <br />
     </div>
