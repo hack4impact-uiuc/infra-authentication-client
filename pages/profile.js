@@ -17,8 +17,7 @@ import {
   Row,
   Col
 } from "reactstrap";
-
-import { setCookie } from "./../utils/cookie";
+import { setCookie, getCookie } from "./../utils/cookie";
 
 class ProfilePage extends Component {
   state = {
@@ -72,96 +71,100 @@ class ProfilePage extends Component {
       <div>
         <NavBar />
         <p> This is the profile page. </p>
-        <Row>
-          <Card
-            className="interview-card"
-            style={{ width: "400px", height: "60%" }}
-          >
-            <CardBody>
-              <Form>
-                <FormGroup>
-                  <Label for="exampleEmail">Question</Label>
-                  <Input
-                    name="question"
-                    maxLength="128"
-                    value={this.state.question}
-                    onChange={this.handleChange}
-                    required
-                  />
-                </FormGroup>
-                <FormGroup>
-                  <Label for="examplePassword">Answer</Label>
-                  <Input
-                    name="answer"
-                    maxLength="128"
-                    value={this.state.answer}
-                    onChange={this.handleChange}
-                    required
-                  />
-                </FormGroup>
-                <Button
-                  color="success"
-                  size="lg"
-                  onClick={this.handleSubmit}
-                  style={{ float: "left", width: "100%" }}
-                >
-                  Set Security Question
-                </Button>
-              </Form>
-            </CardBody>
-          </Card>
-          <Card
-            className="interview-card"
-            style={{ width: "400px", height: "60%" }}
-          >
-            <CardBody>
-              <Form>
-                <FormGroup>
-                  <Label>Old Password</Label>
-                  <Input
-                    name="oldPassword"
-                    type="password"
-                    maxLength="128"
-                    value={this.state.oldPassword}
-                    onChange={this.handleChange}
-                    required
-                  />
-                </FormGroup>
-                <FormGroup>
-                  <Label>New Password</Label>
-                  <Input
-                    name="newPassword1"
-                    type="password"
-                    maxLength="128"
-                    value={this.state.newPassword1}
-                    onChange={this.handleChange}
-                    required
-                  />
-                </FormGroup>
-                <FormGroup>
-                  <Label>Confirm Password</Label>
-                  <Input
-                    name="newPassword2"
-                    type="password"
-                    maxLength="128"
-                    value={this.state.newPassword2}
-                    onChange={this.handleChange}
-                    required
-                  />
-                </FormGroup>
-                <Button
-                  color="success"
-                  size="lg"
-                  onClick={this.handlePassChange}
-                  style={{ float: "left", width: "100%" }}
-                >
-                  Change Password
-                </Button>
-              </Form>
-              {this.state.passwordChangeMessage}
-            </CardBody>
-          </Card>
-        </Row>
+        {getCookie("google") ? (
+          <p> You are a Google user :) </p>
+        ) : (
+          <Row>
+            <Card
+              className="interview-card"
+              style={{ width: "400px", height: "60%" }}
+            >
+              <CardBody>
+                <Form>
+                  <FormGroup>
+                    <Label for="exampleEmail">Question</Label>
+                    <Input
+                      name="question"
+                      maxLength="128"
+                      value={this.state.question}
+                      onChange={this.handleChange}
+                      required
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <Label for="examplePassword">Answer</Label>
+                    <Input
+                      name="answer"
+                      maxLength="128"
+                      value={this.state.answer}
+                      onChange={this.handleChange}
+                      required
+                    />
+                  </FormGroup>
+                  <Button
+                    color="success"
+                    size="lg"
+                    onClick={this.handleSubmit}
+                    style={{ float: "left", width: "100%" }}
+                  >
+                    Set Security Question
+                  </Button>
+                </Form>
+              </CardBody>
+            </Card>
+            <Card
+              className="interview-card"
+              style={{ width: "400px", height: "60%" }}
+            >
+              <CardBody>
+                <Form>
+                  <FormGroup>
+                    <Label>Old Password</Label>
+                    <Input
+                      name="oldPassword"
+                      type="password"
+                      maxLength="128"
+                      value={this.state.oldPassword}
+                      onChange={this.handleChange}
+                      required
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <Label>New Password</Label>
+                    <Input
+                      name="newPassword1"
+                      type="password"
+                      maxLength="128"
+                      value={this.state.newPassword1}
+                      onChange={this.handleChange}
+                      required
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <Label>Confirm Password</Label>
+                    <Input
+                      name="newPassword2"
+                      type="password"
+                      maxLength="128"
+                      value={this.state.newPassword2}
+                      onChange={this.handleChange}
+                      required
+                    />
+                  </FormGroup>
+                  <Button
+                    color="success"
+                    size="lg"
+                    onClick={this.handlePassChange}
+                    style={{ float: "left", width: "100%" }}
+                  >
+                    Change Password
+                  </Button>
+                </Form>
+                {this.state.passwordChangeMessage}
+              </CardBody>
+            </Card>
+          </Row>
+        )}
       </div>
     );
   }

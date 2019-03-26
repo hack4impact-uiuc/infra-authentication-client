@@ -155,6 +155,23 @@ function changeRole(userEmail, newRole) {
   }
 }
 
+function google(tokenId) {
+  try {
+    return fetch(`http://localhost:5000/google`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        tokenId: tokenId
+      })
+    });
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 export {
   register,
   login,
@@ -165,5 +182,6 @@ export {
   resetPassword,
   changePassword,
   getUsersForRolesPage,
-  changeRole
+  changeRole,
+  google
 };
