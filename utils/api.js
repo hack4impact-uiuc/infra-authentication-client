@@ -44,7 +44,7 @@ function verify() {
   }
 }
 
-function setSecurityQuestion(question, answer) {
+function setSecurityQuestion(question, answer, reenter_password) {
   try {
     return fetch(`http://localhost:5000/addSecurityQuestion`, {
       method: "POST",
@@ -54,7 +54,8 @@ function setSecurityQuestion(question, answer) {
       },
       body: JSON.stringify({
         question,
-        answer
+        answer,
+        reenter_password
       })
     });
   } catch (err) {
