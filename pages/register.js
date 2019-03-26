@@ -40,7 +40,7 @@ export default class extends React.Component {
       if (!response.token) {
         this.setState({ errorMessage: response.message });
       } else {
-        setCookie("token", resp.token);
+        setCookie("token", response.token);
         Router.push("/");
       }
     } else {
