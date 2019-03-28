@@ -130,14 +130,18 @@ function getUsersForRolesPage() {
   try {
     return fetch(`http://localhost:5000/roles`, {
       method: "GET",
-      headers: { "Content-Type": "application/json", token: getCookie("token") }
+      headers: {
+        "Content-Type": "application/json",
+        token: getCookie("token"),
+        google: getCookie("google")
+      }
     });
   } catch (err) {
     console.log(err);
   }
 }
 
-function changeRole(userEmail, newRole) {
+function changeRole(userEmail, newRole, password) {
   try {
     return fetch(`http://localhost:5000/roleschange`, {
       method: "POST",
@@ -147,7 +151,8 @@ function changeRole(userEmail, newRole) {
       },
       body: JSON.stringify({
         userEmail,
-        newRole
+        newRole,
+        password
       })
     });
   } catch (err) {
