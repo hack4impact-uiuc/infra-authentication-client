@@ -55,7 +55,7 @@ function setSecurityQuestion(question, answer, reenter_password) {
       body: JSON.stringify({
         question,
         answer,
-        reenter_password
+        question_password
       })
     });
   } catch (err) {

@@ -24,7 +24,7 @@ class ProfilePage extends Component {
   state = {
     question: "",
     answer: "",
-    reenter_password: "",
+    question_password: "",
     oldPassword: "",
     newPassword1: "",
     newPassword2: "",
@@ -40,12 +40,12 @@ class ProfilePage extends Component {
     if (
       this.state.question.trim().length > 0 &&
       this.state.answer.trim().length > 0 &&
-      this.state.reenter_password.trim().length > 0
+      this.state.question_password.trim().length > 0
     ) {
       const result = await setSecurityQuestion(
         this.state.question,
         this.state.answer,
-        this.state.reenter_password
+        this.state.question_password
       );
       const resp = await result.json();
     }
@@ -105,10 +105,10 @@ class ProfilePage extends Component {
                 <FormGroup>
                   <Label>Enter Password</Label>
                   <Input
-                    name="reenter_password"
+                    name="question_password"
                     type="password"
                     maxLength="128"
-                    value={this.state.reenter_password}
+                    value={this.state.question_password}
                     onChange={this.handleChange}
                     required
                   />
