@@ -12,14 +12,18 @@ import {
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
-  DropdownItem
+  DropdownItem,
+  FormGroup,
+  Label,
+  Input
 } from "reactstrap";
 
 class RolesPage extends Component {
   state = {
     users: [],
     newRole: "",
-    userWithNewRole: -1
+    userWithNewRole: -1,
+    password: ""
   };
 
   async componentDidMount() {
@@ -35,7 +39,8 @@ class RolesPage extends Component {
   submitNewRole = async e => {
     const changeRoleData = await changeRole(
       this.state.users[this.state.userWithNewRole].email,
-      this.state.newRole
+      this.state.newRole,
+      this.state.password
     );
     const changeRoleDataParsed = await changeRoleData.json();
     const userData = await getUsersForRolesPage();
@@ -46,12 +51,26 @@ class RolesPage extends Component {
       newRole: ""
     });
   };
+  handleChange = event => {
+    this.setState({ [event.target.name]: event.target.value });
+  };
 
   render() {
     return (
-      <div>
+      <div align="center">
         <NavBar />
-
+        <div align="center" style={{ width: "300px" }}>
+          <FormGroup size="sm">
+            <Label for="examplePassword">Enter your password:</Label>
+            <Input
+              type="password"
+              name="password"
+              maxLength="128"
+              value={this.state.password}
+              onChange={this.handleChange}
+            />
+          </FormGroup>
+        </div>
         <Card
           className="interview-card"
           style={{ height: "60%", margin: "2%" }}
@@ -68,10 +87,9 @@ class RolesPage extends Component {
                 </tr>
               </thead>
               <tbody>
-                {this.state.users.map((user, idx) => console.log(user, idx))}
                 {this.state.users.map((user, idx) => (
                   <tr key={idx}>
-                    <th scope="row">1</th>
+                    <th scope="row">{idx + 1}</th>
                     <td>{user.email}</td>
                     <td>{user.role}</td>
                     <td>
