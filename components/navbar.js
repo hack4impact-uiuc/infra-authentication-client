@@ -27,6 +27,7 @@ class NavBar extends Component {
   };
   logout = ({ Component, router, ctx }) => {
     removeCookie("token");
+    removeCookie("google");
     Router.push("/login");
   };
 
