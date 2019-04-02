@@ -204,6 +204,6 @@ export {
   changePassword,
   getUsersForRolesPage,
   changeRole,
-  verifyPIN
+  verifyPIN,
   google
 };

@@ -4,7 +4,6 @@ import { register, verifyPIN } from "../utils/api";
 import {
   Form,
   Button,
-  ButtonGroup,
   FormGroup,
   Label,
   Input,
@@ -147,7 +146,8 @@ export default class extends React.Component {
                 <Input
                   name="pin"
                   type="number"
-                  maxLength="128"
+                  maxLength="10"
+                  minLength="4"
                   value={this.state.pin}
                   onChange={this.handleChange}
                   required
