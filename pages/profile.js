@@ -4,7 +4,12 @@ import React from "react";
 import Router from "next/router";
 import withAuth from "../components/withAuth";
 import NavBar from "../components/navbar";
-import { setSecurityQuestion, changePassword } from "../utils/api";
+import {
+  setSecurityQuestion,
+  changePassword,
+  sendEmail,
+  checkPin
+} from "../utils/api";
 import {
   Form,
   Button,
@@ -27,7 +32,9 @@ class ProfilePage extends Component {
     newPassword1: "",
     newPassword2: "",
     passwordChangeMessage: "",
-    securityPassword: ""
+    securityPassword: "",
+    pin: "",
+    verificationMessage: ""
   };
 
   handleChange = event => {
@@ -65,6 +72,30 @@ class ProfilePage extends Component {
       }
     } else {
       this.setState({ passwordChangeMessage: "Passwords do not match" });
+    }
+  };
+
+  handleEmail = async e => {
+    e.preventDefault();
+    const result = await sendEmail();
+    const resp = await result.json();
+    if (!resp.token) {
+      this.setState({ verificationMessage: resp.message });
+    } else {
+      this.setState({ verificationMessage: resp.message });
+    }
+  };
+
+  handlePin = async e => {
+    e.preventDefault();
+    if (this.state.pin.trim().length > 0) {
+      const result = await checkPin(parseInt(this.state.pin));
+      const resp = await result.json();
+      if (!resp.token) {
+        this.setState({ verificationMessage: resp.message });
+      } else {
+        this.setState({ verificationMessage: resp.message });
+      }
     }
   };
 
@@ -174,6 +205,44 @@ class ProfilePage extends Component {
                   </Button>
                 </Form>
                 {this.state.passwordChangeMessage}
+              </CardBody>
+            </Card>
+            <Card
+              className="interview-card"
+              style={{ width: "400px", height: "60%" }}
+            >
+              <CardBody>
+                <Form>
+                  <FormGroup>
+                    <Label>Verification Pin</Label>
+                    <Input
+                      name="pin"
+                      //type="password"
+                      maxLength="128"
+                      value={this.state.pin}
+                      onChange={this.handleChange}
+                      required
+                    />
+                  </FormGroup>
+                  <Button
+                    color="success"
+                    size="lg"
+                    onClick={this.handleEmail}
+                    style={{ float: "left", width: "49%" }}
+                  >
+                    Resend Email
+                  </Button>
+                  <Button
+                    color="success"
+                    size="lg"
+                    onClick={this.handlePin}
+                    style={{ float: "right", width: "49%" }}
+                  >
+                    Submit Pin
+                  </Button>
+                </Form>
+                <br />
+                {this.state.verificationMessage}
               </CardBody>
             </Card>
           </Row>

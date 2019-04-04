@@ -178,6 +178,38 @@ function google(tokenId) {
   }
 }
 
+function sendEmail() {
+  try {
+    return fetch(`http://localhost:5000/resendVerificationEmail`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        token: getCookie("token")
+      },
+      body: JSON.stringify({})
+    });
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+function checkPin(pin) {
+  try {
+    return fetch(`http://localhost:5000/verifyEmail`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        token: getCookie("token")
+      },
+      body: JSON.stringify({
+        pin
+      })
+    });
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 export {
   register,
   login,
@@ -189,5 +221,7 @@ export {
   changePassword,
   getUsersForRolesPage,
   changeRole,
-  google
+  google,
+  sendEmail,
+  checkPin
 };
