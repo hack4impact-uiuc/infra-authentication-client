@@ -178,16 +178,17 @@ function google(tokenId) {
   }
 }
 
-function verifyPIN(userEmail, pin) {
+function verifyPIN(pin) {
+  console.log(pin);
   try {
     return fetch(`http://localhost:5000/verifyEmail`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        token: getCookie("token")
       },
       body: JSON.stringify({
-        email: userEmail,
-        pin: pin
+        pin
       })
     });
   } catch (err) {
