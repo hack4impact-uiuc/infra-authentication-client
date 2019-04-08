@@ -178,6 +178,22 @@ function google(tokenId) {
   }
 }
 
+function verifyPIN(userEmail, pin) {
+  try {
+    return fetch(`http://localhost:5000/verifyEmail`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        email: userEmail,
+        pin: pin
+      })
+    });
+  } catch (err) {
+    console.log(err);
+  }
+}
 export {
   register,
   login,
@@ -189,5 +205,6 @@ export {
   changePassword,
   getUsersForRolesPage,
   changeRole,
+  verifyPIN,
   google
 };

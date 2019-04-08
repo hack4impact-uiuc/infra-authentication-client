@@ -1,10 +1,9 @@
 import Link from "next/link";
 import Router from "next/router";
-import { register } from "../utils/api";
+import { register, verifyPIN } from "../utils/api";
 import {
   Form,
   Button,
-  ButtonGroup,
   FormGroup,
   Label,
   Input,
@@ -23,7 +22,10 @@ export default class extends React.Component {
     email: "",
     password: "",
     password2: "",
-    errorMessage: ""
+    errorMessage: "",
+    pinMessage: "",
+    pin: "",
+    successfulSubmit: false
   };
 
   handleChange = event => {
@@ -41,85 +43,129 @@ export default class extends React.Component {
         this.setState({ errorMessage: response.message });
       } else {
         setCookie("token", response.token);
-        Router.push("/");
+        this.setState({ successfulSubmit: true });
       }
     } else {
       this.setState({ errorMessage: "Passwords do not match" });
     }
   };
 
+  handlePINVerify = async e => {
+    e.preventDefault();
+    const result = await verifyPIN(this.state.email, this.state.pin);
+    const response = await result.json();
+    this.setState({ pinMessage: response.message });
+  };
+
   render = () => (
     <div>
-      <Card
-        className="interview-card"
-        style={{ width: "400px", height: "60%" }}
-      >
-        <CardTitle>
-          <h3 style={{ textAlign: "center", paddingTop: "10px" }}>Register</h3>
-        </CardTitle>
-
-        <CardBody>
-          <Form>
-            <FormGroup>
-              <Label for="exampleEmail">Email</Label>
-              <Input
-                type="email"
-                name="email"
-                id="exampleEmail"
-                maxLength="64"
-                pattern={EMAIL_REGEX}
-                value={this.state.email}
-                onChange={this.handleChange}
-                required
-              />
-            </FormGroup>
-            <FormGroup>
-              <Label for="examplePassword">Password</Label>
-              <Input
-                type="password"
-                name="password"
-                minLength="8"
-                maxLength="64"
-                value={this.state.password}
-                onChange={this.handleChange}
-                required
-              />
-            </FormGroup>
-            <FormGroup>
-              <Label for="examplePassword">Confirm Password</Label>
-              <Input
-                type="password"
-                name="password2"
-                minLength="8"
-                maxLength="64"
-                value={this.state.password2}
-                onChange={this.handleChange}
-                required
-              />
-            </FormGroup>
-            <Button
-              color="success"
-              size="lg"
-              onClick={this.handleSubmit}
-              style={{ float: "left", width: "48%" }}
-            >
+      {" "}
+      {!this.state.successfulSubmit ? (
+        <Card
+          className="interview-card"
+          style={{ width: "400px", height: "60%" }}
+        >
+          <CardTitle>
+            <h3 style={{ textAlign: "center", paddingTop: "10px" }}>
               Register
-            </Button>{" "}
-            <Button
-              color="success"
-              size="lg"
-              onClick={() => Router.push("/login")}
-              style={{ float: "right", width: "49%" }}
-            >
-              Login
-            </Button>
-            <br />
-            <br />
-            <br />
-            <p style={{ color: "red" }}>{this.state.errorMessage}</p>
-          </Form>
-        </CardBody>
-      </Card>
+            </h3>
+          </CardTitle>
+
+          <CardBody>
+            <Form>
+              <FormGroup>
+                <Label for="exampleEmail">Email</Label>
+                <Input
+                  type="email"
+                  name="email"
+                  id="exampleEmail"
+                  maxLength="64"
+                  pattern={EMAIL_REGEX}
+                  value={this.state.email}
+                  onChange={this.handleChange}
+                  required
+                />
+              </FormGroup>
+              <FormGroup>
+                <Label for="examplePassword">Password</Label>
+                <Input
+                  type="password"
+                  name="password"
+                  minLength="8"
+                  maxLength="64"
+                  value={this.state.password}
+                  onChange={this.handleChange}
+                  required
+                />
+              </FormGroup>
+              <FormGroup>
+                <Label for="examplePassword">Confirm Password</Label>
+                <Input
+                  type="password"
+                  name="password2"
+                  minLength="8"
+                  maxLength="64"
+                  value={this.state.password2}
+                  onChange={this.handleChange}
+                  required
+                />
+              </FormGroup>
+              <Button
+                color="success"
+                size="lg"
+                onClick={this.handleSubmit}
+                style={{ float: "left", width: "48%" }}
+              >
+                Register
+              </Button>{" "}
+              <Button
+                color="success"
+                size="lg"
+                onClick={() => Router.push("/login")}
+                style={{ float: "right", width: "49%" }}
+              >
+                Login
+              </Button>
+              <br />
+              <br />
+              <br />
+              <p style={{ color: "red" }}>{this.state.errorMessage}</p>
+            </Form>
+          </CardBody>
+        </Card>
+      ) : (
+        <Card
+          className="interview-card"
+          style={{ width: "400px", height: "60%" }}
+        >
+          <CardBody>
+            <Form>
+              <FormGroup>
+                <p style={{ color: "green" }}>{this.state.pinMessage}</p>
+                <Label>PIN</Label>
+                <Input
+                  name="pin"
+                  type="number"
+                  maxLength="10"
+                  minLength="4"
+                  value={this.state.pin}
+                  onChange={this.handleChange}
+                  required
+                />
+              </FormGroup>
+              <Button
+                color="success"
+                size="lg"
+                onClick={this.handlePINVerify}
+                style={{ float: "left", width: "100%" }}
+              >
+                Change Password
+              </Button>
+            </Form>
+            {this.state.passwordChangeMessage}
+          </CardBody>
+        </Card>
+      )}
     </div>
   );
 }
