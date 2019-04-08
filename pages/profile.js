@@ -26,7 +26,8 @@ class ProfilePage extends Component {
     oldPassword: "",
     newPassword1: "",
     newPassword2: "",
-    passwordChangeMessage: ""
+    passwordChangeMessage: "",
+    securityPassword: ""
   };
 
   handleChange = event => {
@@ -41,7 +42,8 @@ class ProfilePage extends Component {
     ) {
       const result = await setSecurityQuestion(
         this.state.question,
-        this.state.answer
+        this.state.answer,
+        this.state.securityPassword
       );
       const resp = await result.json();
     }
@@ -82,7 +84,18 @@ class ProfilePage extends Component {
               <CardBody>
                 <Form>
                   <FormGroup>
-                    <Label for="exampleEmail">Question</Label>
+                    <Label>Password</Label>
+                    <Input
+                      name="securityPassword"
+                      type="password"
+                      maxLength="128"
+                      value={this.state.securityPassword}
+                      onChange={this.handleChange}
+                      required
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <Label>Question</Label>
                     <Input
                       name="question"
                       maxLength="128"
@@ -92,7 +105,7 @@ class ProfilePage extends Component {
                     />
                   </FormGroup>
                   <FormGroup>
-                    <Label for="examplePassword">Answer</Label>
+                    <Label>Answer</Label>
                     <Input
                       name="answer"
                       maxLength="128"
