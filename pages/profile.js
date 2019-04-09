@@ -44,10 +44,8 @@ class ProfilePage extends Component {
   };
 
   async componentWillMount() {
-    console.log("w");
     const resp = await (await getSecurityQuestions()).json();
     if (resp.questions) {
-      console.log(resp.questions);
       this.setState({ questions: resp.questions });
     }
   }
@@ -58,7 +56,6 @@ class ProfilePage extends Component {
     this.setState({ dropdownOpen: !this.state.dropdownOpen });
   };
   pickDropDown = (idx, e) => {
-    console.log(idx);
     this.setState({ questionIdx: idx });
   };
   handleSubmit = async e => {
