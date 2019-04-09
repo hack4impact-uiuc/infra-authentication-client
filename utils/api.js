@@ -92,7 +92,7 @@ function submitSecurityQuestionAnswer(email, answer) {
   }
 }
 
-function resetPassword(pin, email, password) {
+function resetPassword(pin, email, password, answer) {
   try {
     return fetch(`http://localhost:5000/passwordReset`, {
       method: "POST",
@@ -100,7 +100,8 @@ function resetPassword(pin, email, password) {
       body: JSON.stringify({
         pin,
         email,
-        password
+        password,
+        answer
       })
     });
   } catch (err) {
