@@ -67,7 +67,6 @@ class ProfilePage extends Component {
         this.state.securityPassword
       );
       const resp = await result.json();
-      console.log(resp);
     }
   };
 
