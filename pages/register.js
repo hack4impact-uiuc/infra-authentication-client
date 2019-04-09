@@ -167,7 +167,8 @@ export default class extends React.Component {
                 style={{
                   float: "left",
                   backgroundColor: "cornflowerblue",
-                  marginBottom: "3%"
+                  marginBottom: "3%",
+                  width: "100%"
                 }}
               >
                 Resend PIN
