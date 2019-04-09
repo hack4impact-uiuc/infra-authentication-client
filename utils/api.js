@@ -179,7 +179,6 @@ function google(tokenId) {
 }
 
 function verifyPIN(pin) {
-  console.log(pin);
   try {
     return fetch(`http://localhost:5000/verifyEmail`, {
       method: "POST",
