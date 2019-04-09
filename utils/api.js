@@ -194,6 +194,18 @@ function verifyPIN(userEmail, pin) {
     console.log(err);
   }
 }
+
+function resendPIN() {
+  try {
+    return fetch(`http://localhost:5000/resendVerificationEmail`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", token: getCookie("token") }
+    });
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 export {
   register,
   login,
@@ -206,5 +218,6 @@ export {
   getUsersForRolesPage,
   changeRole,
   verifyPIN,
+  resendPIN,
   google
 };
