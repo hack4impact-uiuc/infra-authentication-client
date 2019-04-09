@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Router from "next/router";
-import { register, verifyPIN } from "../utils/api";
+import { register, verifyPIN, resendPIN } from "../utils/api";
 import {
   Form,
   Button,
@@ -58,6 +58,13 @@ export default class extends React.Component {
     if (response.status === 200) {
       Router.push("/");
     }
+  };
+
+  handlePINResend = async e => {
+    e.preventDefault();
+    const result = await resendPIN();
+    const response = await result.json();
+    this.setState({ pinMessage: response.message });
   };
 
   render = () => (
@@ -156,6 +163,18 @@ export default class extends React.Component {
                   required
                 />
               </FormGroup>
+              <Button
+                color="success"
+                size="lg"
+                onClick={this.handlePINResend}
+                style={{
+                  float: "left",
+                  marginBottom: "3%",
+                  width: "100%"
+                }}
+              >
+                Resend PIN
+              </Button>
               <Button
                 color="success"
                 size="lg"
