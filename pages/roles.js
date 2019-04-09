@@ -48,7 +48,8 @@ class RolesPage extends Component {
     this.setState({
       users: userDataParsed.user_emails,
       userWithNewRole: -1,
-      newRole: ""
+      newRole: "",
+      response: changeRoleDataParsed.message
     });
   };
   handleChange = event => {
@@ -59,18 +60,7 @@ class RolesPage extends Component {
     return (
       <div align="center">
         <NavBar />
-        <div align="center" style={{ width: "300px" }}>
-          <FormGroup size="sm">
-            <Label for="examplePassword">Enter your password:</Label>
-            <Input
-              type="password"
-              name="password"
-              maxLength="128"
-              value={this.state.password}
-              onChange={this.handleChange}
-            />
-          </FormGroup>
-        </div>
+
         <Card
           className="interview-card"
           style={{ height: "60%", margin: "2%" }}
@@ -127,8 +117,21 @@ class RolesPage extends Component {
                 ))}
               </tbody>
             </Table>
+            <div align="left" style={{ display: "inline", width: "300px" }}>
+              <FormGroup size="sm">
+                <Label for="examplePassword">Confirm Password</Label>
+                <Input
+                  type="password"
+                  name="password"
+                  maxLength="128"
+                  value={this.state.password}
+                  onChange={this.handleChange}
+                />
+              </FormGroup>
+            </div>
           </CardBody>
         </Card>
+        {this.state.response}
       </div>
     );
   }

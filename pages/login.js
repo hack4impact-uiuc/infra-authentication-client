@@ -47,7 +47,7 @@ class Login extends Component {
   };
 
   handleSubmit = async e => {
-    event.preventDefault();
+    e.preventDefault();
 
     const result = await login(this.state.email, this.state.password);
     const resp = await result.json();

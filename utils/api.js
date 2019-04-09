@@ -92,7 +92,7 @@ function submitSecurityQuestionAnswer(email, answer) {
   }
 }
 
-function resetPassword(pin, email, password) {
+function resetPassword(pin, email, password, answer) {
   try {
     return fetch(`http://localhost:5000/passwordReset`, {
       method: "POST",
@@ -100,7 +100,8 @@ function resetPassword(pin, email, password) {
       body: JSON.stringify({
         pin,
         email,
-        password
+        password,
+        answer
       })
     });
   } catch (err) {
@@ -179,7 +180,6 @@ function google(tokenId) {
 }
 
 function verifyPIN(pin) {
-  console.log(pin);
   try {
     return fetch(`http://localhost:5000/verifyEmail`, {
       method: "POST",
@@ -195,6 +195,18 @@ function verifyPIN(pin) {
     console.log(err);
   }
 }
+
+function resendPIN() {
+  try {
+    return fetch(`http://localhost:5000/resendVerificationEmail`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", token: getCookie("token") }
+    });
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 export {
   register,
   login,
@@ -207,5 +219,6 @@ export {
   getUsersForRolesPage,
   changeRole,
   verifyPIN,
+  resendPIN,
   google
 };

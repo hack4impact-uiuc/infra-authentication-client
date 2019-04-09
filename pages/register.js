@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Router from "next/router";
-import { register, verifyPIN } from "../utils/api";
+import { register, verifyPIN, resendPIN, google } from "../utils/api";
 import {
   Form,
   Button,
@@ -12,6 +12,7 @@ import {
   CardTitle
 } from "reactstrap";
 import { setCookie } from "./../utils/cookie";
+import { GoogleLogin, GoogleLogout } from "react-google-login";
 
 // michael's baby
 const EMAIL_REGEX =
@@ -26,6 +27,20 @@ export default class extends React.Component {
     pinMessage: "",
     pin: "",
     successfulSubmit: false
+  };
+
+  handleGoogle = async e => {
+    // event.preventDefault();
+
+    const result = await google(e.tokenId);
+    const resp = await result.json();
+    if (resp.status !== 200) {
+      this.setState({ errorMessage: resp.message });
+    } else {
+      setCookie("token", e.tokenId);
+      setCookie("google", true);
+      Router.push("/");
+    }
   };
 
   handleChange = event => {
@@ -55,84 +70,104 @@ export default class extends React.Component {
     const result = await verifyPIN(this.state.pin);
     const response = await result.json();
     this.setState({ pinMessage: response.message });
+    if (response.status === 200) {
+      Router.push("/");
+    }
+  };
+
+  handlePINResend = async e => {
+    e.preventDefault();
+    const result = await resendPIN();
+    const response = await result.json();
+    this.setState({ pinMessage: response.message });
   };
 
   render = () => (
     <div>
       {" "}
       {!this.state.successfulSubmit ? (
-        <Card
-          className="interview-card"
-          style={{ width: "400px", height: "60%" }}
-        >
-          <CardTitle>
-            <h3 style={{ textAlign: "center", paddingTop: "10px" }}>
-              Register
-            </h3>
-          </CardTitle>
-
-          <CardBody>
-            <Form>
-              <FormGroup>
-                <Label for="exampleEmail">Email</Label>
-                <Input
-                  type="email"
-                  name="email"
-                  id="exampleEmail"
-                  maxLength="64"
-                  pattern={EMAIL_REGEX}
-                  value={this.state.email}
-                  onChange={this.handleChange}
-                  required
-                />
-              </FormGroup>
-              <FormGroup>
-                <Label for="examplePassword">Password</Label>
-                <Input
-                  type="password"
-                  name="password"
-                  minLength="8"
-                  maxLength="64"
-                  value={this.state.password}
-                  onChange={this.handleChange}
-                  required
-                />
-              </FormGroup>
-              <FormGroup>
-                <Label for="examplePassword">Confirm Password</Label>
-                <Input
-                  type="password"
-                  name="password2"
-                  minLength="8"
-                  maxLength="64"
-                  value={this.state.password2}
-                  onChange={this.handleChange}
-                  required
-                />
-              </FormGroup>
-              <Button
-                color="success"
-                size="lg"
-                onClick={this.handleSubmit}
-                style={{ float: "left", width: "48%" }}
-              >
+        <div>
+          <Card
+            className="interview-card"
+            style={{ width: "400px", height: "60%" }}
+          >
+            <CardTitle>
+              <h3 style={{ textAlign: "center", paddingTop: "10px" }}>
                 Register
-              </Button>{" "}
-              <Button
-                color="success"
-                size="lg"
-                onClick={() => Router.push("/login")}
-                style={{ float: "right", width: "49%" }}
-              >
-                Login
-              </Button>
-              <br />
-              <br />
-              <br />
-              <p style={{ color: "red" }}>{this.state.errorMessage}</p>
-            </Form>
-          </CardBody>
-        </Card>
+              </h3>
+            </CardTitle>
+
+            <CardBody>
+              <Form>
+                <FormGroup>
+                  <Label for="exampleEmail">Email</Label>
+                  <Input
+                    type="email"
+                    name="email"
+                    id="exampleEmail"
+                    maxLength="64"
+                    pattern={EMAIL_REGEX}
+                    value={this.state.email}
+                    onChange={this.handleChange}
+                    required
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <Label for="examplePassword">Password</Label>
+                  <Input
+                    type="password"
+                    name="password"
+                    minLength="8"
+                    maxLength="64"
+                    value={this.state.password}
+                    onChange={this.handleChange}
+                    required
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <Label for="examplePassword">Confirm Password</Label>
+                  <Input
+                    type="password"
+                    name="password2"
+                    minLength="8"
+                    maxLength="64"
+                    value={this.state.password2}
+                    onChange={this.handleChange}
+                    required
+                  />
+                </FormGroup>
+                <Button
+                  color="success"
+                  size="lg"
+                  onClick={this.handleSubmit}
+                  style={{ float: "left", width: "48%" }}
+                >
+                  Register
+                </Button>{" "}
+                <Button
+                  color="success"
+                  size="lg"
+                  onClick={() => Router.push("/login")}
+                  style={{ float: "right", width: "49%" }}
+                >
+                  Login
+                </Button>
+                <br />
+                <br />
+                <br />
+                <p style={{ color: "red" }}>{this.state.errorMessage}</p>
+              </Form>
+            </CardBody>
+          </Card>
+          <GoogleLogin
+            className="btn sign-in-btn"
+            clientId="992779657352-2te3be0na925rtkt8kt8vc1f8tiph5oh.apps.googleusercontent.com"
+            responseType="id_token"
+            buttonText={this.props.role}
+            scope="https://www.googleapis.com/auth/userinfo.email"
+            onSuccess={this.handleGoogle}
+          />
+        </div>
       ) : (
         <Card
           className="interview-card"
@@ -153,6 +188,18 @@ export default class extends React.Component {
                   required
                 />
               </FormGroup>
+              <Button
+                color="success"
+                size="lg"
+                onClick={this.handlePINResend}
+                style={{
+                  float: "left",
+                  marginBottom: "3%",
+                  width: "100%"
+                }}
+              >
+                Resend PIN
+              </Button>
               <Button
                 color="success"
                 size="lg"
