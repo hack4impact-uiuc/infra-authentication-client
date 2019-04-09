@@ -55,6 +55,9 @@ export default class extends React.Component {
     const result = await verifyPIN(this.state.pin);
     const response = await result.json();
     this.setState({ pinMessage: response.message });
+    if (response.status === 200) {
+      Router.push("/");
+    }
   };
 
   render = () => (
