@@ -166,7 +166,6 @@ export default class extends React.Component {
                 onClick={this.handlePINResend}
                 style={{
                   float: "left",
-                  backgroundColor: "cornflowerblue",
                   marginBottom: "3%",
                   width: "100%"
                 }}
