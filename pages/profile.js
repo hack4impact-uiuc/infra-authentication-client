@@ -2,6 +2,7 @@ import { Component } from "react";
 import Link from "next/link";
 import React from "react";
 import Router from "next/router";
+import { Alert } from "reactstrap";
 import withAuth from "../components/withAuth";
 import NavBar from "../components/navbar";
 import { setSecurityQuestion, changePassword } from "../utils/api";
@@ -72,6 +73,10 @@ class ProfilePage extends Component {
     return (
       <div>
         <NavBar />
+        {this.state.passwordChangeMessage !== "" && (
+          <Alert color="primary">{this.state.passwordChangeMessage}</Alert>
+        )}
+
         <p> This is the profile page. </p>
         {getCookie("google") ? (
           <p> You are a Google user :) </p>
@@ -173,7 +178,6 @@ class ProfilePage extends Component {
                     Change Password
                   </Button>
                 </Form>
-                {this.state.passwordChangeMessage}
               </CardBody>
             </Card>
           </Row>

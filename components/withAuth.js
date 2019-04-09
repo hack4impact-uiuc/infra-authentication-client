@@ -1,6 +1,7 @@
 import React from "react";
 import { verify } from "../utils/api";
 import NavBar from "./navbar";
+import Router from "next/router";
 const withAuth = WrappedComponent => {
   class HOC extends React.Component {
     state = {
@@ -8,21 +9,18 @@ const withAuth = WrappedComponent => {
     };
     async componentDidMount() {
       const verifyResponse = await verify();
-      if (verifyResponse) {
-        this.setState({ verified: verifyResponse.status === 200 });
+      const verifyResponseParsed = await verifyResponse.json();
+      if (verifyResponseParsed.status === 200) {
+        this.setState({ verified: true });
       } else {
-        this.setState({ verified: false });
+        Router.push("/register");
       }
     }
     render() {
       return (
         <div>
           {this.state.verified ? (
-            <WrappedComponent
-              {...this.props}
-              secretToLife={42}
-              verified={this.state.verified}
-            />
+            <WrappedComponent {...this.props} verified={this.state.verified} />
           ) : (
             <div>
               <NavBar />
