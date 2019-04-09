@@ -5,7 +5,17 @@ import Router from "next/router";
 import { Alert } from "reactstrap";
 import withAuth from "../components/withAuth";
 import NavBar from "../components/navbar";
-import { setSecurityQuestion, changePassword } from "../utils/api";
+import {
+  Dropdown,
+  DropdownItem,
+  DropdownToggle,
+  DropdownMenu
+} from "reactstrap";
+import {
+  setSecurityQuestion,
+  changePassword,
+  getSecurityQuestions
+} from "../utils/api";
 import {
   Form,
   Button,
@@ -22,8 +32,10 @@ import { setCookie, getCookie } from "./../utils/cookie";
 
 class ProfilePage extends Component {
   state = {
-    question: "",
+    dropdownOpen: false,
+    questionIdx: -1,
     answer: "",
+    questions: [],
     oldPassword: "",
     newPassword1: "",
     newPassword2: "",
@@ -31,22 +43,34 @@ class ProfilePage extends Component {
     securityPassword: ""
   };
 
+  async componentWillMount() {
+    console.log("w");
+    const resp = await (await getSecurityQuestions()).json();
+    if (resp.questions) {
+      console.log(resp.questions);
+      this.setState({ questions: resp.questions });
+    }
+  }
   handleChange = event => {
     this.setState({ [event.target.name]: event.target.value });
   };
-
+  toggle = () => {
+    this.setState({ dropdownOpen: !this.state.dropdownOpen });
+  };
+  pickDropDown = (idx, e) => {
+    console.log(idx);
+    this.setState({ questionIdx: idx });
+  };
   handleSubmit = async e => {
     e.preventDefault();
-    if (
-      this.state.question.trim().length > 0 &&
-      this.state.answer.trim().length > 0
-    ) {
+    if (this.state.questionIdx !== -1 && this.state.answer.trim().length > 0) {
       const result = await setSecurityQuestion(
-        this.state.question,
+        this.state.questionIdx,
         this.state.answer,
         this.state.securityPassword
       );
       const resp = await result.json();
+      console.log(resp);
     }
   };
 
@@ -89,14 +113,27 @@ class ProfilePage extends Component {
               <CardBody>
                 <Form>
                   <FormGroup>
-                    <Label>Question</Label>
-                    <Input
-                      name="question"
-                      maxLength="128"
-                      value={this.state.question}
-                      onChange={this.handleChange}
-                      required
-                    />
+                    {!!this.state.questions ? (
+                      <Dropdown
+                        isOpen={this.state.dropdownOpen}
+                        toggle={this.toggle}
+                      >
+                        <DropdownToggle caret>
+                          {this.state.questionIdx === -1
+                            ? "Security Question"
+                            : this.state.questions[this.state.questionIdx]}
+                        </DropdownToggle>
+                        <DropdownMenu>
+                          {this.state.questions.map((question, idx) => (
+                            <DropdownItem
+                              onClick={this.pickDropDown.bind(null, idx)}
+                            >
+                              {question}
+                            </DropdownItem>
+                          ))}
+                        </DropdownMenu>
+                      </Dropdown>
+                    ) : null}
                   </FormGroup>
                   <FormGroup>
                     <Label>Answer</Label>

@@ -44,11 +44,10 @@ class ForgotPasswordPage extends Component {
 
     const result = await getSecurityQuestion(this.state.email);
     const resp = await result.json();
-    console.log(resp);
-    if (resp.status === 200) {
+    if (!!resp.question) {
       this.setState({ question: resp.question, errorMessage: "" });
     } else {
-      this.setState({ errorMessage: resp.message });
+      this.setState({ errorMessage: resp.message || "something went wrong" });
     }
   };
 
@@ -181,8 +180,9 @@ class ForgotPasswordPage extends Component {
                     onClick={this.handleGetSecurityQuestion}
                     style={{ float: "right", width: "100%" }}
                   >
-                    Reset Password
+                    Get Security Question
                   </Button>
+
                   {this.state.errorMessage}
                 </Form>
               </CardBody>
