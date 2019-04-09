@@ -4,7 +4,7 @@ import { getCookie } from "./cookie";
 
 function register(emailInput, passwordInput) {
   try {
-    return fetch(`http://localhost:8000/register/`, {
+    return fetch(`http://localhost:5000/register/`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -20,7 +20,7 @@ function register(emailInput, passwordInput) {
 
 function login(emailInput, passwordInput) {
   try {
-    return fetch(`http://localhost:8000/login`, {
+    return fetch(`http://localhost:5000/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -35,7 +35,7 @@ function login(emailInput, passwordInput) {
 
 function verify() {
   try {
-    return fetch(`http://localhost:8000/verify/`, {
+    return fetch(`http://localhost:5000/verify/`, {
       method: "POST",
       headers: { "Content-Type": "application/json", token: getCookie("token") }
     });
@@ -45,7 +45,7 @@ function verify() {
 }
 function getSecurityQuestions() {
   try {
-    return fetch("http://localhost:8000/getSecurityQuestions", {
+    return fetch("http://localhost:5000/getSecurityQuestions", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -58,7 +58,7 @@ function getSecurityQuestions() {
 }
 function setSecurityQuestion(questionIdx, answer, password) {
   try {
-    return fetch(`http://localhost:8000/addSecurityQuestionAnswer`, {
+    return fetch(`http://localhost:5000/addSecurityQuestionAnswer`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -77,7 +77,7 @@ function setSecurityQuestion(questionIdx, answer, password) {
 
 function getSecurityQuestion(email) {
   try {
-    return fetch(`http://localhost:8000/getSecurityQuestionForUser`, {
+    return fetch(`http://localhost:5000/getSecurityQuestionForUser`, {
       method: "GET",
       headers: { email: email, "Content-Type": "application/json" }
     });
@@ -88,7 +88,7 @@ function getSecurityQuestion(email) {
 
 function submitSecurityQuestionAnswer(email, answer) {
   try {
-    return fetch(`http://localhost:8000/forgotPassword`, {
+    return fetch(`http://localhost:5000/forgotPassword`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -103,7 +103,7 @@ function submitSecurityQuestionAnswer(email, answer) {
 
 function resetPassword(pin, email, password, answer) {
   try {
-    return fetch(`http://localhost:8000/passwordReset`, {
+    return fetch(`http://localhost:5000/passwordReset`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -120,7 +120,7 @@ function resetPassword(pin, email, password, answer) {
 
 function changePassword(currentPassword, newPassword) {
   try {
-    return fetch(`http://localhost:8000/changePassword`, {
+    return fetch(`http://localhost:5000/changePassword`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -139,7 +139,7 @@ function changePassword(currentPassword, newPassword) {
 function getUsersForRolesPage() {
   console.log("ROLES");
   try {
-    return fetch(`http://localhost:8000/roles`, {
+    return fetch(`http://localhost:5000/roles`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -154,7 +154,7 @@ function getUsersForRolesPage() {
 
 function changeRole(userEmail, newRole, password) {
   try {
-    return fetch(`http://localhost:8000/roleschange`, {
+    return fetch(`http://localhost:5000/roleschange`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -173,7 +173,7 @@ function changeRole(userEmail, newRole, password) {
 
 function google(tokenId) {
   try {
-    return fetch(`http://localhost:8000/google`, {
+    return fetch(`http://localhost:5000/google`, {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -190,7 +190,7 @@ function google(tokenId) {
 
 function verifyPIN(pin) {
   try {
-    return fetch(`http://localhost:8000/verifyEmail`, {
+    return fetch(`http://localhost:5000/verifyEmail`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -207,7 +207,7 @@ function verifyPIN(pin) {
 
 function resendPIN() {
   try {
-    return fetch(`http://localhost:8000/resendVerificationEmail`, {
+    return fetch(`http://localhost:5000/resendVerificationEmail`, {
       method: "POST",
       headers: { "Content-Type": "application/json", token: getCookie("token") }
     });
