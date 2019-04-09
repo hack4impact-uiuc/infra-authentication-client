@@ -84,17 +84,6 @@ class ProfilePage extends Component {
               <CardBody>
                 <Form>
                   <FormGroup>
-                    <Label>Password</Label>
-                    <Input
-                      name="securityPassword"
-                      type="password"
-                      maxLength="128"
-                      value={this.state.securityPassword}
-                      onChange={this.handleChange}
-                      required
-                    />
-                  </FormGroup>
-                  <FormGroup>
                     <Label>Question</Label>
                     <Input
                       name="question"
@@ -110,6 +99,17 @@ class ProfilePage extends Component {
                       name="answer"
                       maxLength="128"
                       value={this.state.answer}
+                      onChange={this.handleChange}
+                      required
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <Label>Confirm Password</Label>
+                    <Input
+                      name="securityPassword"
+                      type="password"
+                      maxLength="128"
+                      value={this.state.securityPassword}
                       onChange={this.handleChange}
                       required
                     />

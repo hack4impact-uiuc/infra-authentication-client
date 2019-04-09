@@ -159,7 +159,7 @@ export default class extends React.Component {
                 onClick={this.handlePINVerify}
                 style={{ float: "left", width: "100%" }}
               >
-                Change Password
+                Verify Email
               </Button>
             </Form>
             {this.state.passwordChangeMessage}
