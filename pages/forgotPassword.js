@@ -70,14 +70,13 @@ class ForgotPasswordPage extends Component {
   };
 
   handleSubmitNewPassword = async e => {
-    console.log("submitting teh new password");
     e.preventDefault();
-    const result = await resetPassword(
+    const response = await (await resetPassword(
       this.state.pin,
       this.state.email,
-      this.state.password
-    );
-    const response = await result.json();
+      this.state.password,
+      this.state.answer
+    )).json();
     this.setState({ errorMessage: response.message });
   };
 
