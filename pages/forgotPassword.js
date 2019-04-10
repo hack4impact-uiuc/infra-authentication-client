@@ -44,7 +44,6 @@ class ForgotPasswordPage extends Component {
 
     const result = await getSecurityQuestion(this.state.email);
     const resp = await result.json();
-    console.log(resp);
     if (resp.status === 200) {
       this.setState({ question: resp.question, errorMessage: "" });
     } else {
@@ -60,9 +59,7 @@ class ForgotPasswordPage extends Component {
       this.state.answer
     );
     const resp = await result.json();
-    console.log(resp);
     if (resp.status === 200) {
-      console.log("success");
       this.setState({ submitNewPassword: true, errorMessage: "" });
     } else {
       this.setState({ errorMessage: resp.message });
