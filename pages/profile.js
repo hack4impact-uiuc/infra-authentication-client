@@ -5,7 +5,7 @@ import Router from "next/router";
 import { Alert } from "reactstrap";
 import withAuth from "../components/withAuth";
 import NavBar from "../components/navbar";
-import { setSecurityQuestion, changePassword } from "../utils/api";
+import { setSecurityQuestion, changePassword, userInfo } from "../utils/api";
 import {
   Form,
   Button,
@@ -28,8 +28,13 @@ class ProfilePage extends Component {
     newPassword1: "",
     newPassword2: "",
     passwordChangeMessage: "",
-    securityPassword: ""
+    securityPassword: "",
+    info: ""
   };
+
+  componentDidMount() {
+    this.info();
+  }
 
   handleChange = event => {
     this.setState({ [event.target.name]: event.target.value });
@@ -69,6 +74,17 @@ class ProfilePage extends Component {
     }
   };
 
+  info = async () => {
+    const result = await userInfo();
+    const response = await result.json();
+    this.setState({
+      info: {
+        email: response.user_email,
+        role: response.user_role,
+        verification: response.user_verified
+      }
+    });
+  };
   render() {
     return (
       <div>
@@ -76,8 +92,15 @@ class ProfilePage extends Component {
         {this.state.passwordChangeMessage !== "" && (
           <Alert color="primary">{this.state.passwordChangeMessage}</Alert>
         )}
-
         <p> This is the profile page. </p>
+        <ul>
+          <li>Email: {this.state.info.email}</li>
+          <li>Role: {this.state.info.role}</li>
+          <li>
+            Verification: You are{this.state.info.verification ? " " : " not "}
+            verified
+          </li>
+        </ul>
         {getCookie("google") ? (
           <p> You are a Google user :) </p>
         ) : (
