@@ -149,7 +149,8 @@ function changeRole(userEmail, newRole, password) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        token: getCookie("token")
+        token: getCookie("token"),
+        google: getCookie("google")
       },
       body: JSON.stringify({
         userEmail,
