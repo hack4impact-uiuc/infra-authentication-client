@@ -27,9 +27,10 @@ class ProfilePage extends Component {
     oldPassword: "",
     newPassword1: "",
     newPassword2: "",
-    passwordChangeMessage: "",
     securityPassword: "",
-    info: ""
+    info: "",
+    responseMessage: "",
+    securityPassword: ""
   };
 
   componentDidMount() {
@@ -52,6 +53,7 @@ class ProfilePage extends Component {
         this.state.securityPassword
       );
       const resp = await result.json();
+      this.setState({ responseMessage: resp.message });
     }
   };
 
@@ -64,13 +66,13 @@ class ProfilePage extends Component {
       );
       const response = await result.json();
       if (!response.token) {
-        this.setState({ passwordChangeMessage: response.message });
+        this.setState({ responseMessage: response.message });
       } else {
-        this.setState({ passwordChangeMessage: response.message });
+        this.setState({ responseMessage: response.message });
         setCookie("token", response.token);
       }
     } else {
-      this.setState({ passwordChangeMessage: "Passwords do not match" });
+      this.setState({ responseMessage: "Passwords do not match" });
     }
   };
 
@@ -89,8 +91,8 @@ class ProfilePage extends Component {
     return (
       <div>
         <NavBar />
-        {this.state.passwordChangeMessage !== "" && (
-          <Alert color="primary">{this.state.passwordChangeMessage}</Alert>
+        {this.state.responseMessage !== "" && (
+          <Alert color="primary">{this.state.responseMessage}</Alert>
         )}
         <p> This is the profile page. </p>
         <ul>
