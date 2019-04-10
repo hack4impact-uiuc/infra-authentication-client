@@ -149,7 +149,8 @@ function changeRole(userEmail, newRole, password) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        token: getCookie("token")
+        token: getCookie("token"),
+        google: getCookie("google")
       },
       body: JSON.stringify({
         userEmail,
@@ -200,7 +201,25 @@ function resendPIN() {
   try {
     return fetch(`http://localhost:5000/resendVerificationEmail`, {
       method: "POST",
-      headers: { "Content-Type": "application/json", token: getCookie("token") }
+      headers: {
+        "Content-Type": "application/json",
+        token: getCookie("token")
+      }
+    });
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+function userInfo() {
+  try {
+    return fetch(`http://localhost:5000/getUser`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        token: getCookie("token"),
+        google: getCookie("google")
+      }
     });
   } catch (err) {
     console.log(err);
@@ -220,5 +239,6 @@ export {
   changeRole,
   verifyPIN,
   resendPIN,
-  google
+  google,
+  userInfo
 };
