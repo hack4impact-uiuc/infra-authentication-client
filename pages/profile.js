@@ -126,6 +126,9 @@ class ProfilePage extends Component {
         {this.state.passwordChangeMessage !== "" && (
           <Alert color="primary">{this.state.passwordChangeMessage}</Alert>
         )}
+        {this.state.verificationMessage !== "" && (
+          <Alert color="primary">{this.state.verificationMessage}</Alert>
+        )}
         <p> This is the profile page. </p>
         <ul>
           <li>Email: {this.state.info.email}</li>
