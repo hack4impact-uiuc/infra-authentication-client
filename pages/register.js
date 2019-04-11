@@ -217,8 +217,9 @@ export default class extends React.Component {
                 size="sm"
                 onClick={() => Router.push("/")}
                 style={{
-                  float: "left",
-                  width: "100%"
+                  float: "right",
+                  width: "25%",
+                  marginRight: "6%"
                 }}
               >
                 Skip Verification
