@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Component } from "react";
 import Router from "next/router";
 import { register, verifyPIN, resendPIN, google } from "../utils/api";
 import {
@@ -12,13 +12,13 @@ import {
   CardTitle
 } from "reactstrap";
 import { setCookie } from "./../utils/cookie";
-import { GoogleLogin, GoogleLogout } from "react-google-login";
+import { GoogleLogin } from "react-google-login";
 
 // michael's baby
 const EMAIL_REGEX =
   "([a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)@([a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+).([a-zA-Z]{2,3}).?([a-zA-Z]{0,3})";
 
-export default class extends React.Component {
+export default class extends Component {
   state = {
     email: "",
     password: "",
@@ -30,8 +30,7 @@ export default class extends React.Component {
   };
 
   handleGoogle = async e => {
-    // event.preventDefault();
-
+    e.preventDefault();
     const result = await google(e.tokenId);
     const resp = await result.json();
     if (resp.status !== 200) {
@@ -49,7 +48,7 @@ export default class extends React.Component {
     this.setState({ [name]: value });
   };
 
-  handleSubmit = async e => {
+  handleSubmit = async event => {
     event.preventDefault();
     if (this.state.password === this.state.password2) {
       const result = await register(this.state.email, this.state.password);

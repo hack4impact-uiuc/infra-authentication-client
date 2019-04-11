@@ -1,18 +1,22 @@
 module.exports = {
-  parserOptions: {
-    ecmaVersion: 9,
-    sourceType: "module",
-    ecmaFeatures: {
-      jsx: true
-    }
+  parser: "babel-eslint",
+  env: {
+    browser: true,
+    es6: true,
+    commonjs: true
   },
   extends: "eslint:recommended",
-  env: {
-    amd: true,
-    node: true,
-    es6: true
+  parserOptions: {
+    ecmaVersion: 9,
+    ecmaFeatures: {
+      jsx: true
+    },
+    sourceType: "module"
   },
+  plugins: ["react"],
   rules: {
-    "no-console": "off"
+    "react/prop-types": 0,
+    "react/jsx-uses-vars": [2],
+    "no-console": 0
   }
 };

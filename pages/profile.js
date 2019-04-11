@@ -1,22 +1,17 @@
 import { Component } from "react";
-import Link from "next/link";
-import React from "react";
-import Router from "next/router";
-import { Alert } from "reactstrap";
 import withAuth from "../components/withAuth";
 import NavBar from "../components/navbar";
 import { setSecurityQuestion, changePassword, userInfo } from "../utils/api";
 import {
+  Alert,
   Form,
   Button,
-  ButtonGroup,
   FormGroup,
   Label,
   Input,
   Card,
   CardBody,
-  Row,
-  Col
+  Row
 } from "reactstrap";
 import { setCookie, getCookie } from "./../utils/cookie";
 
@@ -46,12 +41,11 @@ class ProfilePage extends Component {
       this.state.question.trim().length > 0 &&
       this.state.answer.trim().length > 0
     ) {
-      const result = await setSecurityQuestion(
+      await setSecurityQuestion(
         this.state.question,
         this.state.answer,
         this.state.securityPassword
       );
-      const resp = await result.json();
     }
   };
 

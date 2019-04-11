@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Router from "next/router";
 import {
   getSecurityQuestion,
   submitSecurityQuestionAnswer,
@@ -8,7 +7,6 @@ import {
 import {
   Form,
   Button,
-  ButtonGroup,
   FormGroup,
   Label,
   Input,
@@ -21,7 +19,6 @@ const EMAIL_REGEX =
   "([a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)@([a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+).([a-zA-Z]{2,3}).?([a-zA-Z]{0,3})";
 // const PASSWORD_REGEX = "^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})";
 
-import { GoogleLogin, GoogleLogout } from "react-google-login";
 import { Component } from "react";
 class ForgotPasswordPage extends Component {
   state = {
