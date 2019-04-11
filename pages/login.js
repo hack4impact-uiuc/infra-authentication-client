@@ -4,7 +4,6 @@ import { login, google } from "../utils/api";
 import {
   Form,
   Button,
-  ButtonGroup,
   FormGroup,
   Label,
   Input,
@@ -16,9 +15,8 @@ import { setCookie } from "./../utils/cookie";
 
 const EMAIL_REGEX =
   "([a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)@([a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+).([a-zA-Z]{2,3}).?([a-zA-Z]{0,3})";
-// const PASSWORD_REGEX = "^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})";
 
-import { GoogleLogin, GoogleLogout } from "react-google-login";
+import { GoogleLogin } from "react-google-login";
 import { Component } from "react";
 class Login extends Component {
   state = {
@@ -33,8 +31,7 @@ class Login extends Component {
   };
 
   handleGoogle = async e => {
-    // event.preventDefault();
-
+    e.preventDefault();
     const result = await google(e.tokenId);
     const resp = await result.json();
     if (resp.status !== 200) {

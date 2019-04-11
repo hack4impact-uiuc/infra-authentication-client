@@ -5,8 +5,6 @@ import {
   NavbarToggler,
   NavbarBrand,
   Nav,
-  NavItem,
-  NavLink,
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
@@ -25,7 +23,7 @@ class NavBar extends Component {
       isOpen: !this.state.isOpen
     });
   };
-  logout = ({ Component, router, ctx }) => {
+  logout = () => {
     removeCookie("token");
     removeCookie("google");
     Router.push("/login");

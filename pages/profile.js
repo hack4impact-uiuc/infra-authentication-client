@@ -1,8 +1,4 @@
 import { Component } from "react";
-import Link from "next/link";
-import React from "react";
-import Router from "next/router";
-import { Alert } from "reactstrap";
 import withAuth from "../components/withAuth";
 import NavBar from "../components/navbar";
 import {
@@ -13,16 +9,15 @@ import {
   verifyPIN
 } from "../utils/api";
 import {
+  Alert,
   Form,
   Button,
-  ButtonGroup,
   FormGroup,
   Label,
   Input,
   Card,
   CardBody,
-  Row,
-  Col
+  Row
 } from "reactstrap";
 import { setCookie, getCookie } from "./../utils/cookie";
 

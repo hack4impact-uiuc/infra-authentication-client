@@ -1,6 +1,4 @@
 import { Component } from "react";
-import Link from "next/link";
-import Router from "next/router";
 import withAuth from "../components/withAuth";
 import NavBar from "../components/navbar";
 import { getUsersForRolesPage, changeRole } from "../utils/api";
@@ -36,7 +34,8 @@ class RolesPage extends Component {
     this.setState({ newRole, userWithNewRole });
   };
 
-  submitNewRole = async e => {
+  submitNewRole = async event => {
+    event.preventDefault();
     const changeRoleData = await changeRole(
       this.state.users[this.state.userWithNewRole].email,
       this.state.newRole,
