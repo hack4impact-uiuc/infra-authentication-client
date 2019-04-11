@@ -40,7 +40,9 @@ class ProfilePage extends Component {
     newPassword1: "",
     newPassword2: "",
     passwordChangeMessage: "",
-    securityPassword: ""
+    securityPassword: "",
+    submittedSecurity: false,
+    successSubmitSecurity: false
   };
 
   async componentWillMount() {
@@ -66,7 +68,19 @@ class ProfilePage extends Component {
         this.state.answer,
         this.state.securityPassword
       );
+      this.setState({ submittedSecurity: true });
       const resp = await result.json();
+      if (resp.status === 200) {
+        this.setState({ successSubmitSecurity: true });
+      } else {
+        this.setState({ successSubmitSecurity: false });
+      }
+      setTimeout(() => {
+        this.setState({
+          successSubmitSecurity: false,
+          submittedSecurity: false
+        });
+      }, 1500);
     }
   };
 
@@ -90,8 +104,17 @@ class ProfilePage extends Component {
   };
 
   render() {
+    const { submittedSecurity, successSubmitSecurity } = this.state;
     return (
-      <div>
+      <Page>
+        {submittedSecurity && successSubmitSecurity ? (
+          <Alert color="primary">
+            Successfully Submitted Security Question
+          </Alert>
+        ) : null}
+        {submittedSecurity && !successSubmitSecurity ? (
+          <Alert color="primary">Unable to Submit Security Question</Alert>
+        ) : null}
         <NavBar />
         {this.state.passwordChangeMessage !== "" && (
           <Alert color="primary">{this.state.passwordChangeMessage}</Alert>
@@ -215,7 +238,7 @@ class ProfilePage extends Component {
             </Card>
           </Row>
         )}
-      </div>
+      </Page>
     );
   }
 }
