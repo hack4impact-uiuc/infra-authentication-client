@@ -1,7 +1,13 @@
 import { Component } from "react";
 import withAuth from "../components/withAuth";
 import NavBar from "../components/navbar";
-import { setSecurityQuestion, changePassword, userInfo } from "../utils/api";
+import {
+  setSecurityQuestion,
+  changePassword,
+  userInfo,
+  resendPIN,
+  verifyPIN
+} from "../utils/api";
 import {
   Alert,
   Form,
@@ -22,9 +28,11 @@ class ProfilePage extends Component {
     oldPassword: "",
     newPassword1: "",
     newPassword2: "",
-    passwordChangeMessage: "",
     securityPassword: "",
-    info: ""
+    info: "",
+    pin: "",
+    verificationMessage: "",
+    responseMessage: ""
   };
 
   componentDidMount() {
@@ -46,6 +54,8 @@ class ProfilePage extends Component {
         this.state.answer,
         this.state.securityPassword
       );
+      const resp = await result.json();
+      this.setState({ responseMessage: resp.message });
     }
   };
 
@@ -58,13 +68,13 @@ class ProfilePage extends Component {
       );
       const response = await result.json();
       if (!response.token) {
-        this.setState({ passwordChangeMessage: response.message });
+        this.setState({ responseMessage: response.message });
       } else {
-        this.setState({ passwordChangeMessage: response.message });
+        this.setState({ responseMessage: response.message });
         setCookie("token", response.token);
       }
     } else {
-      this.setState({ passwordChangeMessage: "Passwords do not match" });
+      this.setState({ responseMessage: "Passwords do not match" });
     }
   };
 
@@ -79,19 +89,52 @@ class ProfilePage extends Component {
       }
     });
   };
+
+  handleEmail = async e => {
+    e.preventDefault();
+    const result = await resendPIN();
+    const resp = await result.json();
+    this.setState({ verificationMessage: resp.message });
+  };
+
+  handlePin = async e => {
+    e.preventDefault();
+    if (this.state.pin.trim().length > 0) {
+      const result = await verifyPIN(parseInt(this.state.pin));
+      const resp = await result.json();
+      this.setState({ verificationMessage: resp.message });
+      if (resp.status === 200) {
+        this.setState({
+          info: {
+            email: this.state.info.email,
+            role: this.state.info.role,
+            verification: true
+          }
+        });
+      }
+    }
+  };
+
   render() {
     return (
       <div>
         <NavBar />
-        {this.state.passwordChangeMessage !== "" && (
-          <Alert color="primary">{this.state.passwordChangeMessage}</Alert>
+        {this.state.responseMessage !== "" && (
+          <Alert color="primary">{this.state.responseMessage}</Alert>
+        )}
+        {this.state.verificationMessage !== "" && (
+          <Alert color="primary">{this.state.verificationMessage}</Alert>
         )}
         <p> This is the profile page. </p>
         <ul>
           <li>Email: {this.state.info.email}</li>
           <li>Role: {this.state.info.role}</li>
           <li>
-            Verification: You are{this.state.info.verification ? " " : " not "}
+            Verification: You are{" "}
+            {this.state.info.verification &&
+            this.state.info.verification != "undefined"
+              ? ""
+              : "not "}
             verified
           </li>
         </ul>
@@ -197,6 +240,44 @@ class ProfilePage extends Component {
                 </Form>
               </CardBody>
             </Card>
+            {this.state.info.verification &&
+            this.state.info.verification != "undefined" ? null : (
+              <Card
+                className="interview-card"
+                style={{ width: "400px", height: "60%" }}
+              >
+                <CardBody>
+                  <Form>
+                    <FormGroup>
+                      <Label>Verification Pin</Label>
+                      <Input
+                        name="pin"
+                        maxLength="128"
+                        value={this.state.pin}
+                        onChange={this.handleChange}
+                        required
+                      />
+                    </FormGroup>
+                    <Button
+                      color="success"
+                      size="lg"
+                      onClick={this.handleEmail}
+                      style={{ float: "left", width: "49%" }}
+                    >
+                      Resend Email
+                    </Button>
+                    <Button
+                      color="success"
+                      size="lg"
+                      onClick={this.handlePin}
+                      style={{ float: "right", width: "49%" }}
+                    >
+                      Submit Pin
+                    </Button>
+                  </Form>
+                </CardBody>
+              </Card>
+            )}
           </Row>
         )}
       </div>
