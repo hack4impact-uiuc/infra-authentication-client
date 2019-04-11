@@ -102,7 +102,7 @@ class ForgotPasswordPage extends Component {
                 />
               </FormGroup>
               <FormGroup>
-                <Label>Password</Label>
+                <Label>New Password</Label>
                 <Input
                   type="password"
                   name="password"
@@ -114,7 +114,7 @@ class ForgotPasswordPage extends Component {
                 />
               </FormGroup>
               <FormGroup>
-                <Label>Confirm Password</Label>
+                <Label>Confirm New Password</Label>
                 <Input
                   type="password"
                   name="password2"
