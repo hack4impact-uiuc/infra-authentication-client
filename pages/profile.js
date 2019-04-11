@@ -49,7 +49,7 @@ class ProfilePage extends Component {
       this.state.question.trim().length > 0 &&
       this.state.answer.trim().length > 0
     ) {
-      await setSecurityQuestion(
+      const result = await setSecurityQuestion(
         this.state.question,
         this.state.answer,
         this.state.securityPassword
