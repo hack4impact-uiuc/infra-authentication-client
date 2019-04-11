@@ -280,8 +280,6 @@ class ProfilePage extends Component {
                       Submit Pin
                     </Button>
                   </Form>
-                  <br />
-                  {this.state.verificationMessage}
                 </CardBody>
               </Card>
             )}

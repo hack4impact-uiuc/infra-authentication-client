@@ -213,13 +213,12 @@ export default class extends React.Component {
                 Verify Email
               </Button>
               <Button
-                color="danger"
-                size="lg"
+                color="link"
+                size="sm"
                 onClick={() => Router.push("/")}
                 style={{
                   float: "left",
-                  width: "100%",
-                  marginTop: "3%"
+                  width: "100%"
                 }}
               >
                 Skip Verification
