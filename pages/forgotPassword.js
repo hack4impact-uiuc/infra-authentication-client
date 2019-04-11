@@ -47,7 +47,7 @@ class ForgotPasswordPage extends Component {
     if (!!resp.question) {
       this.setState({ question: resp.question, errorMessage: "" });
     } else {
-      this.setState({ errorMessage: resp.message || "something went wrong" });
+      this.setState({ errorMessage: resp.message });
     }
   };
 
