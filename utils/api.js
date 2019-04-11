@@ -76,6 +76,7 @@ function setSecurityQuestion(questionIdx, answer, password) {
 }
 
 function getSecurityQuestion(email) {
+  console.log(email);
   try {
     return fetch(`http://localhost:5000/getSecurityQuestionForUser`, {
       method: "GET",
