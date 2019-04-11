@@ -204,9 +204,24 @@ export default class extends React.Component {
                 color="success"
                 size="lg"
                 onClick={this.handlePINVerify}
-                style={{ float: "left", width: "100%" }}
+                style={{
+                  float: "left",
+                  marginBotton: "3%",
+                  width: "100%"
+                }}
               >
                 Verify Email
+              </Button>
+              <Button
+                color="link"
+                size="sm"
+                onClick={() => Router.push("/")}
+                style={{
+                  float: "left",
+                  width: "100%"
+                }}
+              >
+                Skip Verification
               </Button>
             </Form>
             {this.state.passwordChangeMessage}
