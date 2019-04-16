@@ -27,7 +27,10 @@ class RolesPage extends Component {
   async componentDidMount() {
     const userData = await getUsersForRolesPage();
     const userDataParsed = await userData.json();
-    this.setState({ users: userDataParsed.user_emails });
+    console.log(userDataParsed);
+    if (userDataParsed.user_emails) {
+      this.setState({ users: userDataParsed.user_emails });
+    }
   }
 
   setNewRole = (newRole, userWithNewRole) => () => {
