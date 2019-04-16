@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Router from "next/router";
 import {
   getSecurityQuestion,
   submitSecurityQuestionAnswer,
@@ -8,20 +7,21 @@ import {
 import {
   Form,
   Button,
-  ButtonGroup,
   FormGroup,
   Label,
   Input,
   Card,
+  Alert,
   CardBody,
   CardTitle
 } from "reactstrap";
+import { setCookie } from "./../utils/cookie";
+import { BrowserRouter as Router } from "react-router-dom";
 
 const EMAIL_REGEX =
   "([a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)@([a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+).([a-zA-Z]{2,3}).?([a-zA-Z]{0,3})";
 // const PASSWORD_REGEX = "^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})";
 
-import { GoogleLogin, GoogleLogout } from "react-google-login";
 import { Component } from "react";
 class ForgotPasswordPage extends Component {
   state = {
@@ -32,6 +32,7 @@ class ForgotPasswordPage extends Component {
     pin: "",
     password: "",
     password2: "",
+    loadingAPI: false,
     submitNewPassword: false
   };
 
@@ -44,7 +45,6 @@ class ForgotPasswordPage extends Component {
 
     const result = await getSecurityQuestion(this.state.email);
     const resp = await result.json();
-    console.log(resp);
     if (resp.status === 200) {
       this.setState({ question: resp.question, errorMessage: "" });
     } else {
@@ -55,14 +55,14 @@ class ForgotPasswordPage extends Component {
   handleSubmitSecurityAnswer = async e => {
     e.preventDefault();
 
+    this.setState({ loadingAPI: true });
     const result = await submitSecurityQuestionAnswer(
       this.state.email,
       this.state.answer
     );
     const resp = await result.json();
-    console.log(resp);
+    this.setState({ loadingAPI: false });
     if (resp.status === 200) {
-      console.log("success");
       this.setState({ submitNewPassword: true, errorMessage: "" });
     } else {
       this.setState({ errorMessage: resp.message });
@@ -71,17 +71,30 @@ class ForgotPasswordPage extends Component {
 
   handleSubmitNewPassword = async e => {
     e.preventDefault();
+    if (this.state.password !== this.state.password2) {
+      this.setState({ errorMessage: "Passwords don't match!" });
+      return;
+    }
     const response = await (await resetPassword(
       this.state.pin,
       this.state.email,
       this.state.password,
       this.state.answer
     )).json();
-    this.setState({ errorMessage: response.message });
+    if (response.status === 200 && response.token) {
+      setCookie("token", response.token);
+      this.setState({ successfulSubmit: true });
+      Router.push("/");
+    } else {
+      this.setState({ errorMessage: response.message });
+    }
   };
 
   render = () => (
     <div>
+      {this.state.errorMessage !== "" && (
+        <Alert color="danger">{this.state.errorMessage}</Alert>
+      )}
       {this.state.submitNewPassword ? (
         <Card
           className="interview-card"
@@ -136,9 +149,6 @@ class ForgotPasswordPage extends Component {
               >
                 Reset Password
               </Button>{" "}
-              <p style={{ color: "red" }}>
-                {this.state.errorMessage ? this.state.errorMessage : ""}
-              </p>
             </Form>
           </CardBody>
           <div style={{ textAlign: "center" }}>
@@ -183,7 +193,6 @@ class ForgotPasswordPage extends Component {
                   >
                     Reset Password
                   </Button>
-                  {this.state.errorMessage}
                 </Form>
               </CardBody>
               <div style={{ textAlign: "center" }}>
@@ -220,10 +229,10 @@ class ForgotPasswordPage extends Component {
                     size="lg"
                     onClick={this.handleSubmitSecurityAnswer}
                     style={{ float: "right", width: "100%" }}
+                    disabled={this.state.loadingAPI}
                   >
                     Submit Answer
                   </Button>
-                  {this.state.errorMessage}
                 </Form>
               </CardBody>
               <div style={{ textAlign: "center" }}>

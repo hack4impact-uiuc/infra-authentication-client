@@ -1,22 +1,23 @@
 import { Component } from "react";
-import Link from "next/link";
-import React from "react";
-import Router from "next/router";
-import { Alert } from "reactstrap";
 import withAuth from "../components/withAuth";
 import NavBar from "../components/navbar";
-import { setSecurityQuestion, changePassword, userInfo } from "../utils/api";
 import {
+  setSecurityQuestion,
+  changePassword,
+  userInfo,
+  resendPIN,
+  verifyPIN
+} from "../utils/api";
+import {
+  Alert,
   Form,
   Button,
-  ButtonGroup,
   FormGroup,
   Label,
   Input,
   Card,
   CardBody,
-  Row,
-  Col
+  Row
 } from "reactstrap";
 import { setCookie, getCookie } from "./../utils/cookie";
 
@@ -29,8 +30,9 @@ class ProfilePage extends Component {
     newPassword2: "",
     securityPassword: "",
     info: "",
-    responseMessage: "",
-    securityPassword: ""
+    pin: "",
+    verificationMessage: "",
+    responseMessage: ""
   };
 
   componentDidMount() {
@@ -87,6 +89,32 @@ class ProfilePage extends Component {
       }
     });
   };
+
+  handleEmail = async e => {
+    e.preventDefault();
+    const result = await resendPIN();
+    const resp = await result.json();
+    this.setState({ verificationMessage: resp.message });
+  };
+
+  handlePin = async e => {
+    e.preventDefault();
+    if (this.state.pin.trim().length > 0) {
+      const result = await verifyPIN(parseInt(this.state.pin));
+      const resp = await result.json();
+      this.setState({ verificationMessage: resp.message });
+      if (resp.status === 200) {
+        this.setState({
+          info: {
+            email: this.state.info.email,
+            role: this.state.info.role,
+            verification: true
+          }
+        });
+      }
+    }
+  };
+
   render() {
     return (
       <div>
@@ -94,12 +122,19 @@ class ProfilePage extends Component {
         {this.state.responseMessage !== "" && (
           <Alert color="primary">{this.state.responseMessage}</Alert>
         )}
+        {this.state.verificationMessage !== "" && (
+          <Alert color="primary">{this.state.verificationMessage}</Alert>
+        )}
         <p> This is the profile page. </p>
         <ul>
           <li>Email: {this.state.info.email}</li>
           <li>Role: {this.state.info.role}</li>
           <li>
-            Verification: You are{this.state.info.verification ? " " : " not "}
+            Verification: You are{" "}
+            {this.state.info.verification &&
+            this.state.info.verification != "undefined"
+              ? ""
+              : "not "}
             verified
           </li>
         </ul>
@@ -205,6 +240,44 @@ class ProfilePage extends Component {
                 </Form>
               </CardBody>
             </Card>
+            {this.state.info.verification &&
+            this.state.info.verification != "undefined" ? null : (
+              <Card
+                className="interview-card"
+                style={{ width: "400px", height: "60%" }}
+              >
+                <CardBody>
+                  <Form>
+                    <FormGroup>
+                      <Label>Verification Pin</Label>
+                      <Input
+                        name="pin"
+                        maxLength="128"
+                        value={this.state.pin}
+                        onChange={this.handleChange}
+                        required
+                      />
+                    </FormGroup>
+                    <Button
+                      color="success"
+                      size="lg"
+                      onClick={this.handleEmail}
+                      style={{ float: "left", width: "49%" }}
+                    >
+                      Resend Email
+                    </Button>
+                    <Button
+                      color="success"
+                      size="lg"
+                      onClick={this.handlePin}
+                      style={{ float: "right", width: "49%" }}
+                    >
+                      Submit Pin
+                    </Button>
+                  </Form>
+                </CardBody>
+              </Card>
+            )}
           </Row>
         )}
       </div>
