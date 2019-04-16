@@ -16,6 +16,7 @@ import {
   CardTitle
 } from "reactstrap";
 import { setCookie } from "./../utils/cookie";
+import Router from "next/router";
 
 const EMAIL_REGEX =
   "([a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)@([a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+).([a-zA-Z]{2,3}).?([a-zA-Z]{0,3})";
