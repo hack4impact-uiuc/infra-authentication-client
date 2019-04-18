@@ -2,7 +2,7 @@ import fetch from "isomorphic-unfetch";
 
 import { getCookie } from "./cookie";
 
-function register(emailInput, passwordInput) {
+function register(emailInput, passwordInput, questionIdx, answer) {
   try {
     return fetch(`http://localhost:5000/register/`, {
       method: "POST",
@@ -10,11 +10,13 @@ function register(emailInput, passwordInput) {
       body: JSON.stringify({
         email: emailInput,
         password: passwordInput,
+        questionIdx,
+        securityQuestionAnswer: answer,
         role: "guest"
       })
     });
   } catch (err) {
-    console.log(err);
+    console.log(err.message);
   }
 }
 
@@ -44,6 +46,7 @@ function verify() {
   }
 }
 function getSecurityQuestions() {
+  console.log(getCookie("token"), "token");
   try {
     return fetch("http://localhost:5000/getSecurityQuestions", {
       method: "GET",
@@ -53,7 +56,7 @@ function getSecurityQuestions() {
       }
     });
   } catch (err) {
-    console.log(err.message);
+    return err;
   }
 }
 function setSecurityQuestion(questionIdx, answer, password) {
@@ -76,7 +79,6 @@ function setSecurityQuestion(questionIdx, answer, password) {
 }
 
 function getSecurityQuestion(email) {
-  console.log(email);
   try {
     return fetch(`http://localhost:5000/getSecurityQuestionForUser`, {
       method: "GET",

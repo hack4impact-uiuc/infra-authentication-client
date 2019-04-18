@@ -63,12 +63,12 @@ class ProfilePage extends Component {
   handleSubmit = async e => {
     e.preventDefault();
     if (this.state.questionIdx !== -1 && this.state.answer.trim().length > 0) {
+      this.setState({ submittedSecurity: true });
       const result = await setSecurityQuestion(
         this.state.questionIdx,
         this.state.answer,
         this.state.securityPassword
       );
-      this.setState({ submittedSecurity: true });
       const resp = await result.json();
       if (resp.status === 200) {
         this.setState({ successSubmitSecurity: true });
@@ -106,7 +106,7 @@ class ProfilePage extends Component {
   render() {
     const { submittedSecurity, successSubmitSecurity } = this.state;
     return (
-      <Page>
+      <div>
         {submittedSecurity && successSubmitSecurity ? (
           <Alert color="primary">
             Successfully Submitted Security Question
@@ -238,7 +238,7 @@ class ProfilePage extends Component {
             </Card>
           </Row>
         )}
-      </Page>
+      </div>
     );
   }
 }
