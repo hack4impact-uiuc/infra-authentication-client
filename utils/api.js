@@ -12,7 +12,8 @@ function register(emailInput, passwordInput, questionIdx, answer) {
         password: passwordInput,
         questionIdx,
         securityQuestionAnswer: answer,
-        role: "guest"
+        role: "guest",
+        answer
       })
     });
   } catch (err) {
@@ -46,7 +47,6 @@ function verify() {
   }
 }
 function getSecurityQuestions() {
-  console.log(getCookie("token"), "token");
   try {
     return fetch("http://localhost:5000/getSecurityQuestions", {
       method: "GET",
@@ -81,7 +81,10 @@ function setSecurityQuestion(questionIdx, answer, password) {
 function getSecurityQuestion(email) {
   try {
     return fetch(`http://localhost:5000/getSecurityQuestionForUser`, {
-      method: "GET",
+      method: "POST",
+      body: JSON.stringify({
+        email
+      }),
       headers: { email: email, "Content-Type": "application/json" }
     });
   } catch (err) {
@@ -89,14 +92,15 @@ function getSecurityQuestion(email) {
   }
 }
 
-function submitSecurityQuestionAnswer(email, answer) {
+function submitSecurityQuestionAnswer(email, answer, questionIdx) {
   try {
     return fetch(`http://localhost:5000/forgotPassword`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         email,
-        answer
+        answer,
+        questionIdx
       })
     });
   } catch (err) {
