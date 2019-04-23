@@ -9,7 +9,11 @@ import {
   Input,
   Card,
   CardBody,
-  CardTitle
+  CardTitle,
+  Dropdown,
+  DropdownItem,
+  DropdownToggle,
+  DropdownMenu
 } from "reactstrap";
 import { setCookie } from "./../utils/cookie";
 import { GoogleLogin } from "react-google-login";
@@ -26,7 +30,9 @@ export default class extends Component {
     errorMessage: "",
     pinMessage: "",
     pin: "",
-    successfulSubmit: false
+    successfulSubmit: false,
+    roleIdx: -1,
+    dropDownRoleOpen: false
   };
 
   handleGoogle = async e => {
@@ -81,6 +87,10 @@ export default class extends Component {
     this.setState({ pinMessage: response.message });
   };
 
+  roletoggle = () => {
+    this.setState({ roleDropdownOpen: !this.state.roleDropdownOpen });
+  };
+
   render = () => (
     <div>
       {" "}
@@ -97,6 +107,17 @@ export default class extends Component {
             </CardTitle>
 
             <CardBody>
+              Role:
+              <Dropdown
+                isOpen={this.state.roleDropdownOpen}
+                toggle={this.roletoggle}
+              >
+                <DropdownToggle caret>Guest</DropdownToggle>
+                <DropdownMenu>
+                  <DropdownItem>Guest</DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
+              <br />
               <Form>
                 <FormGroup>
                   <Label for="exampleEmail">Email</Label>
