@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Component } from "react";
 import Router from "next/router";
 import {
   register,
@@ -23,13 +23,13 @@ import {
   DropdownMenu
 } from "reactstrap";
 import { setCookie } from "./../utils/cookie";
-import { GoogleLogin, GoogleLogout } from "react-google-login";
+import { GoogleLogin } from "react-google-login";
 
 // michael's baby
 const EMAIL_REGEX =
   "([a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)@([a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+).([a-zA-Z]{2,3}).?([a-zA-Z]{0,3})";
 
-export default class extends React.Component {
+export default class extends Component {
   state = {
     email: "",
     password: "",
@@ -46,8 +46,7 @@ export default class extends React.Component {
   };
 
   handleGoogle = async e => {
-    // event.preventDefault();
-
+    e.preventDefault();
     const result = await google(e.tokenId);
     const resp = await result.json();
     if (resp.status !== 200) {
@@ -137,6 +136,10 @@ export default class extends React.Component {
     const result = await resendPIN();
     const response = await result.json();
     this.setState({ pinMessage: response.message });
+  };
+
+  roletoggle = () => {
+    this.setState({ roleDropdownOpen: !this.state.roleDropdownOpen });
   };
 
   render = () => (
@@ -294,9 +297,25 @@ export default class extends React.Component {
                 color="success"
                 size="lg"
                 onClick={this.handlePINVerify}
-                style={{ float: "left", width: "100%" }}
+                style={{
+                  float: "left",
+                  marginBotton: "3%",
+                  width: "100%"
+                }}
               >
                 Verify Email
+              </Button>
+              <Button
+                color="link"
+                size="sm"
+                onClick={() => Router.push("/")}
+                style={{
+                  float: "right",
+                  width: "25%",
+                  marginRight: "6%"
+                }}
+              >
+                Skip Verification
               </Button>
             </Form>
             {this.state.passwordChangeMessage}

@@ -1,21 +1,6 @@
 import { Component } from "react";
-import Link from "next/link";
-import Router from "next/router";
 import withAuth from "../components/withAuth";
 import NavBar from "../components/navbar";
-import {
-  Collapse,
-  Navbar,
-  NavbarToggler,
-  NavbarBrand,
-  Nav,
-  NavItem,
-  NavLink,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem
-} from "reactstrap";
 
 class IndexPage extends Component {
   render() {

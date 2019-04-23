@@ -1,12 +1,9 @@
 import App, { Container } from "next/app";
-import React from "react";
-import cookies from "next-cookies";
 import Head from "./../components/head";
 
 export default class extends App {
-  static async getInitialProps({ Component, router, ctx }) {
+  static async getInitialProps({ Component, ...ctx }) {
     let pageProps = {};
-    const c = cookies(ctx);
     if (Component.getInitialProps) {
       pageProps = await Component.getInitialProps(ctx);
     }
@@ -14,7 +11,7 @@ export default class extends App {
   }
 
   render() {
-    const { Component, pageProps } = this.props;
+    const { Component } = this.props;
 
     return (
       <Container>
