@@ -78,7 +78,7 @@ function setSecurityQuestion(questionIdx, answer, password) {
   }
 }
 
-function getSecurityQuestion(email) {
+function getSecurityQuestionForUser(email) {
   try {
     return fetch(`http://localhost:5000/getSecurityQuestionForUser`, {
       method: "POST",
@@ -144,7 +144,6 @@ function changePassword(currentPassword, newPassword) {
 }
 
 function getUsersForRolesPage() {
-  console.log("ROLES");
   try {
     return fetch(`http://localhost:5000/roles`, {
       method: "GET",
@@ -248,7 +247,7 @@ export {
   verify,
   setSecurityQuestion,
   getSecurityQuestions,
-  getSecurityQuestion,
+  getSecurityQuestionForUser,
   submitSecurityQuestionAnswer,
   resetPassword,
   changePassword,

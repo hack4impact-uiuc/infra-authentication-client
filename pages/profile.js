@@ -44,11 +44,41 @@ class ProfilePage extends Component {
   };
 
   async componentWillMount() {
+    await this.getInfo();
     const resp = await (await getSecurityQuestions()).json();
     if (resp.questions) {
       this.setState({ questions: resp.questions });
     }
   }
+
+  getInfo = async () => {
+    const result = await userInfo();
+    const response = await result.json();
+    this.setState({
+      info: {
+        email: response.user_email,
+        role: response.user_role,
+        verification: response.user_verified
+      }
+    });
+    const resp = await (await getSecurityQuestions()).json();
+    if (resp.questions) {
+      this.setState({ questions: resp.questions });
+    }
+  };
+
+  //  getInfo = async () => {
+  //   const result = await userInfo();
+  //   const response = await result.json();
+  //   this.setState({
+  //     info: {
+  //       email: response.user_email,
+  //       role: response.user_role,
+  //       verification: response.user_verified
+  //     }
+  //   });
+  // };
+
   handleChange = event => {
     this.setState({ [event.target.name]: event.target.value });
   };
@@ -101,18 +131,6 @@ class ProfilePage extends Component {
     }
   };
 
-  info = async () => {
-    const result = await userInfo();
-    const response = await result.json();
-    this.setState({
-      info: {
-        email: response.user_email,
-        role: response.user_role,
-        verification: response.user_verified
-      }
-    });
-  };
-
   handleEmail = async e => {
     e.preventDefault();
     const result = await resendPIN();
@@ -142,34 +160,37 @@ class ProfilePage extends Component {
     const { submittedSecurity, successSubmitSecurity } = this.state;
     return (
       <div>
-        {submittedSecurity && successSubmitSecurity ? (
+        <NavBar />
+        {submittedSecurity && successSubmitSecurity && (
           <Alert color="primary">
             Successfully Submitted Security Question
           </Alert>
-        ) : null}
-        {submittedSecurity && !successSubmitSecurity ? (
+        )}
+        {submittedSecurity && !successSubmitSecurity && (
           <Alert color="primary">Unable to Submit Security Question</Alert>
-        ) : null}
-        <NavBar />
-        {this.state.responseMessage !== "" && (
+        )}
+
+        {this.state.responseMessage && (
           <Alert color="primary">{this.state.responseMessage}</Alert>
         )}
-        {this.state.verificationMessage !== "" && (
+        {this.state.verificationMessage && (
           <Alert color="primary">{this.state.verificationMessage}</Alert>
         )}
-        <p> This is the profile page. </p>
-        <ul>
-          <li>Email: {this.state.info.email}</li>
-          <li>Role: {this.state.info.role}</li>
-          <li>
-            Verification: You are{" "}
-            {this.state.info.verification &&
-            this.state.info.verification != "undefined"
-              ? ""
-              : "not "}
-            verified
-          </li>
-        </ul>
+        {this.state.info && (
+          <ul>
+            <li>Email: {this.state.info.email}</li>
+            <li>Role: {this.state.info.role}</li>
+            <li>
+              Verification: You are{" "}
+              {this.state.info.verification &&
+              this.state.info.verification != "undefined"
+                ? ""
+                : "not "}
+              verified
+            </li>
+          </ul>
+        )}
+
         {getCookie("google") ? (
           <p> You are a Google user :) </p>
         ) : (
@@ -285,7 +306,8 @@ class ProfilePage extends Component {
                 </Form>
               </CardBody>
             </Card>
-            {this.state.info.verification &&
+            {this.state.info &&
+            this.state.info.verification &&
             this.state.info.verification != "undefined" ? null : (
               <Card
                 className="interview-card"
