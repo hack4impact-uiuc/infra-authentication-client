@@ -2,7 +2,7 @@ import fetch from "isomorphic-unfetch";
 
 import { getCookie } from "./cookie";
 
-function register(emailInput, passwordInput) {
+function register(emailInput, passwordInput, questionIdx, answer) {
   try {
     return fetch(`http://localhost:5000/register/`, {
       method: "POST",
@@ -10,11 +10,14 @@ function register(emailInput, passwordInput) {
       body: JSON.stringify({
         email: emailInput,
         password: passwordInput,
-        role: "guest"
+        questionIdx,
+        securityQuestionAnswer: answer,
+        role: "guest",
+        answer
       })
     });
   } catch (err) {
-    console.log(err);
+    console.log(err.message);
   }
 }
 
@@ -43,17 +46,29 @@ function verify() {
     console.log(err);
   }
 }
-
-function setSecurityQuestion(question, answer, password) {
+function getSecurityQuestions() {
   try {
-    return fetch(`http://localhost:5000/addSecurityQuestion`, {
+    return fetch("http://localhost:5000/getSecurityQuestions", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        token: getCookie("token")
+      }
+    });
+  } catch (err) {
+    return err;
+  }
+}
+function setSecurityQuestion(questionIdx, answer, password) {
+  try {
+    return fetch(`http://localhost:5000/addSecurityQuestionAnswer`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         token: getCookie("token")
       },
       body: JSON.stringify({
-        question,
+        questionIdx,
         answer,
         password
       })
@@ -65,26 +80,27 @@ function setSecurityQuestion(question, answer, password) {
 
 function getSecurityQuestion(email) {
   try {
-    return fetch(`http://localhost:5000/getSecurityQuestion`, {
+    return fetch(`http://localhost:5000/getSecurityQuestionForUser`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        email: email
-      })
+        email
+      }),
+      headers: { email: email, "Content-Type": "application/json" }
     });
   } catch (err) {
     console.log(err);
   }
 }
 
-function submitSecurityQuestionAnswer(email, answer) {
+function submitSecurityQuestionAnswer(email, answer, questionIdx) {
   try {
     return fetch(`http://localhost:5000/forgotPassword`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         email,
-        answer
+        answer,
+        questionIdx
       })
     });
   } catch (err) {
@@ -231,6 +247,7 @@ export {
   login,
   verify,
   setSecurityQuestion,
+  getSecurityQuestions,
   getSecurityQuestion,
   submitSecurityQuestionAnswer,
   resetPassword,

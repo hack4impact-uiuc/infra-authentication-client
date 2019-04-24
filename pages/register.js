@@ -1,6 +1,13 @@
 import { Component } from "react";
 import Router from "next/router";
-import { register, verifyPIN, resendPIN, google } from "../utils/api";
+import {
+  register,
+  verifyPIN,
+  resendPIN,
+  google,
+  getSecurityQuestions,
+  setSecurityQuestion
+} from "../utils/api";
 import {
   Form,
   Button,
@@ -31,8 +38,11 @@ export default class extends Component {
     pinMessage: "",
     pin: "",
     successfulSubmit: false,
-    roleIdx: -1,
-    dropDownRoleOpen: false
+    loading: false,
+    questions: [],
+    questionIdx: -1,
+    dropdownOpen: false,
+    securityQuestionAnswer: ""
   };
 
   handleGoogle = async e => {
@@ -48,16 +58,53 @@ export default class extends Component {
     }
   };
 
+  pickDropDown = (idx, e) => {
+    this.setState({ questionIdx: idx });
+  };
+  toggle = () => {
+    this.setState({ dropdownOpen: !this.state.dropdownOpen });
+  };
+
   handleChange = event => {
     const value = event.target.value;
     const name = event.target.name;
     this.setState({ [name]: value });
   };
 
-  handleSubmit = async event => {
+  handleChangeSecurityAnswer = event => {
+    const value = event.target.value;
+    const name = event.target.name;
+    this.setState({ securityQuestionAnswer: value });
+  };
+
+  async componentDidMount() {
+    this.setState({ loading: true });
+    const resp = await getSecurityQuestions();
+    if (!resp) {
+      this.setState({ error: "unable to load data" });
+      return;
+    }
+    const respJson = await resp.json();
+    if (!!respJson.questions) {
+      this.setState({ questions: respJson.questions });
+    } else {
+      this.setState({ loading: false, errorMessage: respJson.error.message });
+    }
+  }
+
+  handleSubmit = async e => {
     event.preventDefault();
-    if (this.state.password === this.state.password2) {
-      const result = await register(this.state.email, this.state.password);
+    if (
+      this.state.password === this.state.password2 &&
+      this.state.questionIdx !== -1 &&
+      this.state.securityQuestionAnswer !== ""
+    ) {
+      let result = await register(
+        this.state.email,
+        this.state.password,
+        this.state.questionIdx,
+        this.state.securityQuestionAnswer
+      );
       const response = await result.json();
       if (!response.token) {
         this.setState({ errorMessage: response.message });
@@ -65,8 +112,12 @@ export default class extends Component {
         setCookie("token", response.token);
         this.setState({ successfulSubmit: true });
       }
-    } else {
-      this.setState({ errorMessage: "Passwords do not match" });
+    } else if (this.state.password !== this.state.password2) {
+      this.setState({ errorMessage: "Passwords do not match " });
+    } else if (this.state.questionIdx === -1) {
+      this.setState({ errorMessage: "Select a question" });
+    } else if (!this.state.securityQuestionAnswer) {
+      this.setState({ errorMessage: "Answer not selected" });
     }
   };
 
@@ -105,19 +156,41 @@ export default class extends Component {
                 Register
               </h3>
             </CardTitle>
-
             <CardBody>
-              Role:
-              <Dropdown
-                isOpen={this.state.roleDropdownOpen}
-                toggle={this.roletoggle}
-              >
-                <DropdownToggle caret>Guest</DropdownToggle>
-                <DropdownMenu>
-                  <DropdownItem>Guest</DropdownItem>
-                </DropdownMenu>
-              </Dropdown>
-              <br />
+              {!!this.state.questions ? (
+                <React.Fragment>
+                  <Dropdown
+                    isOpen={this.state.dropdownOpen}
+                    toggle={this.toggle}
+                  >
+                    <DropdownToggle caret>
+                      {this.state.questionIdx === -1
+                        ? "Security Question"
+                        : this.state.questions[this.state.questionIdx]}
+                    </DropdownToggle>
+                    <DropdownMenu>
+                      {this.state.questions.map((question, idx) => (
+                        <DropdownItem
+                          onClick={this.pickDropDown.bind(null, idx)}
+                        >
+                          {question}
+                        </DropdownItem>
+                      ))}
+                    </DropdownMenu>
+                  </Dropdown>
+                  <Label for="exampleEmail">Answer</Label>
+                  <Input
+                    type="email"
+                    name="email"
+                    id="exampleEmail"
+                    maxLength="64"
+                    pattern={EMAIL_REGEX}
+                    value={this.state.securityQuestionAnswer}
+                    onChange={this.handleChangeSecurityAnswer}
+                    required
+                  />
+                </React.Fragment>
+              ) : null}
               <Form>
                 <FormGroup>
                   <Label for="exampleEmail">Email</Label>
