@@ -157,40 +157,6 @@ export default class extends Component {
               </h3>
             </CardTitle>
             <CardBody>
-              {!!this.state.questions ? (
-                <React.Fragment>
-                  <Dropdown
-                    isOpen={this.state.dropdownOpen}
-                    toggle={this.toggle}
-                  >
-                    <DropdownToggle caret>
-                      {this.state.questionIdx === -1
-                        ? "Security Question"
-                        : this.state.questions[this.state.questionIdx]}
-                    </DropdownToggle>
-                    <DropdownMenu>
-                      {this.state.questions.map((question, idx) => (
-                        <DropdownItem
-                          onClick={this.pickDropDown.bind(null, idx)}
-                        >
-                          {question}
-                        </DropdownItem>
-                      ))}
-                    </DropdownMenu>
-                  </Dropdown>
-                  <Label for="exampleEmail">Answer</Label>
-                  <Input
-                    type="email"
-                    name="email"
-                    id="exampleEmail"
-                    maxLength="64"
-                    pattern={EMAIL_REGEX}
-                    value={this.state.securityQuestionAnswer}
-                    onChange={this.handleChangeSecurityAnswer}
-                    required
-                  />
-                </React.Fragment>
-              ) : null}
               <Form>
                 <FormGroup>
                   <Label for="exampleEmail">Email</Label>
@@ -226,6 +192,38 @@ export default class extends Component {
                     maxLength="64"
                     value={this.state.password2}
                     onChange={this.handleChange}
+                    required
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <Dropdown
+                    isOpen={this.state.dropdownOpen}
+                    toggle={this.toggle}
+                  >
+                    <DropdownToggle caret>
+                      {this.state.questionIdx === -1
+                        ? "Security Question"
+                        : this.state.questions[this.state.questionIdx]}
+                    </DropdownToggle>
+                    <DropdownMenu>
+                      {this.state.questions.map((question, idx) => (
+                        <DropdownItem
+                          onClick={this.pickDropDown.bind(null, idx)}
+                        >
+                          {question}
+                        </DropdownItem>
+                      ))}
+                    </DropdownMenu>
+                  </Dropdown>
+                  <Label for="exampleEmail">Answer</Label>
+                  <Input
+                    type="email"
+                    name="email"
+                    id="exampleEmail"
+                    maxLength="64"
+                    pattern={EMAIL_REGEX}
+                    value={this.state.securityQuestionAnswer}
+                    onChange={this.handleChangeSecurityAnswer}
                     required
                   />
                 </FormGroup>
