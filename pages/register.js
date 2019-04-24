@@ -93,7 +93,7 @@ export default class extends Component {
   }
 
   handleSubmit = async e => {
-    event.preventDefault();
+    e.preventDefault();
     if (
       this.state.password === this.state.password2 &&
       this.state.questionIdx !== -1 &&
