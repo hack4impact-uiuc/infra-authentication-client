@@ -31,7 +31,6 @@ class Login extends Component {
   };
 
   handleGoogle = async e => {
-    //e.preventDefault();
     const result = await google(e.tokenId);
     const resp = await result.json();
     if (resp.status !== 200) {
