@@ -150,7 +150,7 @@ function getUsersForRolesPage() {
       headers: {
         "Content-Type": "application/json",
         token: getCookie("token"),
-        google: getCookie("google")
+        google: getCookie("google") ? true : false
       }
     });
   } catch (err) {
@@ -165,7 +165,7 @@ function changeRole(userEmail, newRole, password) {
       headers: {
         "Content-Type": "application/json",
         token: getCookie("token"),
-        google: getCookie("google")
+        google: getCookie("google") ? true : false
       },
       body: JSON.stringify({
         userEmail,
@@ -233,7 +233,7 @@ function userInfo() {
       headers: {
         "Content-Type": "application/json",
         token: getCookie("token"),
-        google: getCookie("google")
+        google: getCookie("google") ? true : false
       }
     });
   } catch (err) {
